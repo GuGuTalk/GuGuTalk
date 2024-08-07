@@ -88,6 +88,14 @@
     "belongsImgURL": "jds"
   },
   {
+    "id": 18,
+    "roleName": "珐格兰斯",
+    "description": null,
+    "belong": "剪刀手",
+    "imgURl": "fgls",
+    "belongsImgURL": "jds"
+  },
+  {
     "id": 10,
     "roleName": "星绘",
     "description": null,

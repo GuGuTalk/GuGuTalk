@@ -12,38 +12,83 @@ $().ready(function () {
     var uploadImg_scale = 0.2;
     var boxJsonArray = new Array();
     var cen = 0;
+    var isR = false;
     var kqOptions = {
-        isYHZ: false
     }
-    var roleObj = {
-        type: "img",
-        index: 5,
-        //content: 1,
-        roleId: 1,
-        imgId: 3,
-        name: "米雪儿",
-        mark: "mxr_sf",
-        base64: "",
-        path: " images/roleImages/mxr_sf.png",
-        rtx: "rtx"
+    var yhzObj = {
+
     }
+    var expressionCount = 1;
+    var device;
+    /**
+     * 窗口宽度
+     */
+    var windowWidth;
+    /**
+     * 选中的头像图片id
+     */
+    var thisRoleImg;
+    /**
+     * 切换引航者发言，存储超弦体角色头像数据
+     */
+    var tempRoleImg;
     var Keys = "GuGuTalk";
     Init();
+    //键盘按下事件
+    $(document).keydown(function (event) {
+        if (event.ctrlKey) {
+            moveSelection(event.keyCode);
+        }
+        event.stopPropagation();
+    })
+    /**
+     * 键盘移动底部头像选择
+     * @param {*} d 左/右
+     */
+    function moveSelection(d) {
+        var array = $(".conAvataar");
+        var m;
+        for (let i = 0; i < array.length; i++) {
+            var a = $(array[i]);
+            if (a.hasClass("imgd")) {
+                m = a;
+                break;
+            }
+        }
+        switch (d) {
+            case 186:
+                if (m.prev().length == 0) {
+                    $(array[array.length - 1]).click();
+                } else {
+                    m.prev().click();
+                }
 
-    $(document).keyup(function (e) {
-        if (e.keyCode == 45) {
-        }
-        if (e.keyCode == 36) {
-            chooseAvatar = '';
-        }
-        if (e.ctrlKey && e.which == 13) {
-            aside();
-        }
-        if (e.keyCode == 36) { //enter发送
-            wirte();
-        }
+                break;
+            case 222:
+                if (m.next().length == 0) {
+                    $(array[0]).click();
+                } else {
+                    m.next().click();
+                }
 
-    });
+                break;
+            case 18:
+                if ($(".imgd").length > 0) {
+                    tempRoleImg = thisRoleImg;
+                    $(".imgd").click();
+                } else {
+                    $(".conAvataar").each(function () {
+                        if ($(this).data("imgid") == tempRoleImg) {
+
+                            $(this).click();
+                        }
+                    })
+                }
+                break;
+            default:
+                break;
+        }
+    }
 
     /**
      * 读取自定义设置
@@ -53,6 +98,7 @@ $().ready(function () {
         var userAgent = navigator.userAgent;
         loadSetList().then(res => {
             if (res != undefined) {
+                kqOptions = res;
                 updateSetList(res);
             }
 
@@ -61,61 +107,23 @@ $().ready(function () {
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent)) {
             // 在移动端执行的代码
             console.log("移动端访问");
+            device = "Mobile";
             $("#ALLPM").parent().addClass("n");
             $(".bodyN").addClass("margin0");
         } else {
             // 在非移动端执行的代码
             console.log("非移动端访问");
+            device = "PC";
         }
     }
-    //临时的导出存档
-    $("#dccd").click(function () {
-        getTempJson().then(res => {
-            var blob = new Blob([JSON.stringify(res)], { type: "text/plain;charset=utf-8" });
-            var link = document.createElement('a');
-            link.download = '当前编辑内容';
-            link.href = URL.createObjectURL(blob);
-            link.click();
-        })
 
-    })
-    //临时的导入存档
-    $("#drcd").click(function () {
-        var link = document.createElement("input");
-        var jq = $(link);
-        var reader = new FileReader();
-        var imgObj;
-        jq.attr({ "type": "file", "accept": "text/plain" });
-        jq.on("change", function () {
-            var imgP = $(this);
-            imgObj = imgP[0].files[0];
-            reader.onload = function (e) {
-                var content = e.target.result;
-                console.log(content);
-                if (confirm("导入存档会导致当前编辑内容被替换，是否导入？")) {
-                    if (content.indexOf("boxJson") >= 0) {
-                        var json = JSON.parse(content);
-                        LSupdateTempJson(json).then(res => {
-                            loadBoxData();
-                        })
-                    } else {
-                        alert("文件格式错误");
-                    }
-
-
-                }
-            };
-            reader.readAsText(imgObj);
-
-        })
-
-        jq.click();
-
-
-    })
     //gugutalk边上的小提示
     $(".whDiv1").click(function () {
-        alert(`部分浏览器无法保存生成的图片，目前已查明的有uc、夸克、小米自带浏览器，如果碰上无法保存图片的情况可以点击左侧工具栏的导出存档功能，在新的浏览器上导入存档，另外，导出的只是当前编辑内容，考虑到存档覆盖的问题全部存档的导出功能还在制作中`)
+
+        var a = confirm(`部分浏览器无法保存生成的图片，目前已查明的有uc、夸克、小米自带浏览器\n点击确定刷新浏览器缓存,可以解决大部分问题`)
+        if (a) {
+            window.location.reload(true);
+        }
     })
     $(".send").click(function () {
         wirte();
@@ -140,20 +148,16 @@ $().ready(function () {
         var json = new Object();
         $("#text").css("height", "1.35rem");
         var text = $("#text").val();
-        var value;
-
-        var base64;
-        var avatars = $("img[class*='imgd']");
         var a = $("div[class*='roleOverall']");
         if (text != "") {
             json = getRoleJson("txt");
-            console.log(json, "json");
             newTalk = createHtml(json)
             insertOrContinue(newTalk, json);
             var text = document.getElementById("text");
             autoTextarea(text);// 调用
         }
     }
+
     //
     /**
      * 传入参数，根据情况插入对话或者继续对话
@@ -161,6 +165,17 @@ $().ready(function () {
      * @param {*} talk 生成的html
      */
     function insertOrContinue(newTalk, newObj) {
+        for (let i = 0; i < boxJsonArray.length; i++) {
+            if (boxJsonArray[i].rtx == "rtx" && newObj.roleId == "9999") {
+                alert("开启右侧头像时不能使用无头像发言");
+                return;
+            }
+            if (boxJsonArray[i].roleId == "9999" && isR) {
+                alert("无头像发言时不能使用右侧头像");
+                return;
+            }
+        }
+        $(".yufuyg").addClass("disNoneD");
         var that = $(".editOpen");
         if (that.length == 0) {
             $("#box").append(newTalk);
@@ -179,10 +194,8 @@ $().ready(function () {
                     break;
                 }
             }
-            insertTalk(boxJsonArray).then(res => {
-                // console.log(newObj,res);
-                that.before(newTalk);
-            })
+            insertTalk(boxJsonArray);
+            that.before(newTalk);
         }
         $("#text").val("");
         cen++;
@@ -200,10 +213,7 @@ $().ready(function () {
         var editOpen = $(".editOpen").prev().find('.gu');
         var lastDc = $("#box").children().last(".dc").find('.gu');
         var tdc;
-        listOne.rtx = "";
-        if ($(".imgd").length <= 0 && kqOptions.isYHZ) {
-            listOne = roleObj
-        }
+
         //var replyTdc;
         if ($(".editOpen").length == 0) {
             type = 1;
@@ -220,26 +230,27 @@ $().ready(function () {
         switch (listOne.type) {
             case 'Expression':
                 if (listOne.rtx == "rtx") {
-                    if (((tdc.data("name") == listOne.mark) && (tdc.data("names") == listOne.name)) && tdc.data("isYhz")) {
+                    if (((tdc.data("name") == listOne.mark) && (tdc.data("names") == listOne.name)) && tdc.data("isyhz")) {
                         newTalk = `<div class="dc">
-                        <div data-type="${listOne.type}" data-isYhz="true" data-index="${listOne.index}" data-names="${listOne.name}" data-name="${listOne.mark}" class="gu roleOverall rightRoleOverallr">
+                        <div data-type="${listOne.type}" data-isyhz="true" data-index="${listOne.index}"  data-names="${listOne.name}" data-name="${listOne.mark}" class="gu roleOverall rightRoleOverallr">
                           <div class="dfsdfYHZ">
                             <div class="chooseDivYHZ">
                               <input type="checkbox" name="iptChoose" id="" class="iptChooseYHZ ipt">
                             </div>
                           </div>
                           <div class="divImg">
+                              <div class="ugbhgjh disNoneD"><img src="images/t.png" alt="" srcset=""></div>
                             <div class="xvb replaceAvatar"></div>
                             <img src="${listOne.base64.indexOf(a) >= 0 ? dataURItoBlob(listOne.base64) : listOne.path}" crossorigin="anonymous" alt="" class="roleImg width0" srcset="">
                           </div>
                           <div class="dfsiohbdu">
-                            <div class="Righthorn gfuyfhf qp qpW"></div>
+                            <div class="Righthorn gfuyfhf qp qpW disNoneD"></div>
                             <div class="yr">
                               <div class="yt">
                                 <div class="yhzName roleNameSpan width0">${listOne.name}</div>
                               </div>
                               <div class="yb">
-                                <img src="${listOne.content}" alt="" srcset="" class="rightImgExpression">
+                                <img src="${listOne.content}" alt="" srcset="" crossorigin="anonymous"  class="rightImgExpression">
                               </div>
                             </div>
                           </div>
@@ -247,24 +258,25 @@ $().ready(function () {
                       </div>`;
                     } else {
                         newTalk = `<div class="dc">
-                        <div data-type="${listOne.type}" data-isYhz="true" data-index="${listOne.index}" data-names="${listOne.name}" data-name="${listOne.mark}" class="gu roleOverall rightRoleOverall roleOverallTopMargin">
+                        <div data-type="${listOne.type}" data-isyhz="true" data-index="${listOne.index}" data-names="${listOne.name}" data-name="${listOne.mark}" class="gu roleOverall roleOverallTopMargin rightRoleOverall">
                           <div class="dfsdfYHZ">
                             <div class="chooseDivYHZ">
                               <input type="checkbox" name="iptChoose" id="" class="iptChooseYHZ ipt">
                             </div>
                           </div>
                           <div class="divImg">
+                              <div class="ugbhgjh"><img src="images/t.png" alt="" srcset=""></div>
                             <div class="xvb"></div>
                             <img src="${listOne.base64.indexOf(a) >= 0 ? dataURItoBlob(listOne.base64) : listOne.path}" crossorigin="anonymous" alt="" class="roleImg" srcset="">
                           </div>
                           <div class="dfsiohbdu">
-                            <div class="Righthorn gfuyfhf qp qpW"></div>
+                            <div class="Righthorn gfuyfhf qp qpW disNoneD"></div>
                             <div class="yr">
                               <div class="yt">
                                 <div class="yhzName roleNameSpan ">${listOne.name}</div>
                               </div>
                               <div class="yb">
-                                <img src="${listOne.content}" alt="" srcset="" class="rightImgExpression">
+                                <img src="${listOne.content}" alt="" srcset="" crossorigin="anonymous" class="rightImgExpression">
                               </div>
                             </div>
                           </div>
@@ -275,12 +287,12 @@ $().ready(function () {
 
                     if (listOne.roleId == 9999) {
                         if ((tdc.data("name") == listOne.mark)) {
-                            newTalk = `<div class="dc"><div class="gu roleOverall rightRoleOverall " data-type="${listOne.type}" data-index="${listOne.index}" data-name="${listOne.mark}">
+                            newTalk = `<div class="dc"><div class="gu roleOverall rightRoleOverall " data-isyhz="false" data-type="${listOne.type}" data-index="${listOne.index}" data-name="${listOne.mark}">
                             <div class="dfsdfYHZ">
                               <div class="chooseDivYHZ">
                                 <input type="checkbox" name="iptChoose" id="" class="iptChooseYHZ ipt">
                               </div>
-                              <img src="${listOne.content}" alt="" srcset="" class="rightImgExpression udiohsfnds">
+                              <img src="${listOne.content}" alt="" srcset="" crossorigin="anonymous" class="rightImgExpression udiohsfnds">
                             </div>
                           </div></div>`;
                             newTalk = `<div class="dc"><div class="gu roleOverall rightRoleOverall " data-type="${listOne.type}" data-index="${listOne.index}" data-name="${listOne.mark}">
@@ -288,31 +300,32 @@ $().ready(function () {
                     <div class="chooseDivYHZ">
                       <input type="checkbox" name="iptChoose" id="" class="iptChooseYHZ ipt">
                     </div>
-                    <img src="${listOne.content}" alt="" srcset="" class="rightImgExpression udiohsfnds">
+                    <img src="${listOne.content}" alt="" srcset="" crossorigin="anonymous" class="rightImgExpression udiohsfnds">
                   </div>
                 </div></div>`;
                         } else {
-                            newTalk = `<div class="dc roleOverallTopMargin"><div class="gu roleOverall rightRoleOverall  " data-type="${listOne.type}" data-index="${listOne.index}" data-name="${listOne.mark}">
+                            newTalk = `<div class="dc roleOverallTopMargin"><div class="gu roleOverall rightRoleOverall  " data-isyhz="false" data-type="${listOne.type}" data-index="${listOne.index}" data-name="${listOne.mark}">
                             <div class="dfsdfYHZ">
                               <div class="chooseDivYHZ">
-                                <input type="checkbox" name="iptChoose" id="" class="iptChooseYHZ ipt">
+                                <input type="checkbox" name="iptChoose" id=""  class="iptChooseYHZ ipt">
                               </div>
-                              <img src="${listOne.content}" alt="" srcset="" class="rightImgExpression udiohsfnds">
+                              <img src="${listOne.content}" alt="" srcset="" crossorigin="anonymous" class="rightImgExpression udiohsfnds">
                             </div>
                           </div></div>`;
                         }
 
                     } else {
                         //表情后面的文字不隐藏头像，所以去掉data-name="${listOne.mark}" 
-                        if ((tdc.data("name") == listOne.mark) && (tdc.data("names") == listOne.name)) {
+                        if ((tdc.data("name") == listOne.mark) && (tdc.data("names") == listOne.name) && !tdc.data("isyhz")) {
                             newTalk = `<div class="dc">
-                            <div class="gu roleOverall" data-type="${listOne.type}" data-names="${listOne.name}" data-index="${listOne.index}">
+                            <div class="gu roleOverall" data-type="${listOne.type}" data-isyhz="false" data-names="${listOne.name}" data-index="${listOne.index}">
                               <div class="divImg">
+                              <div class="ugbhgjh disNoneD"><img src="images/t.png" alt="" srcset=""></div>
                                 <div class="xvb replaceAvatar"></div>
                                 <img src="${listOne.base64.indexOf(a) >= 0 ? dataURItoBlob(listOne.base64) : listOne.path}" crossorigin="anonymous" alt="" class="roleImg width0" srcset="">
                               </div>
                               <div class="roleTb"><span class="roleNameSpan width0">${listOne.name}</span>
-                                <div class="roleRemarkDivImg"><img src="${listOne.content}" alt="" srcset="" class="rightImgExpression ">
+                                <div class="roleRemarkDivImg"><img src="${listOne.content}" alt="" srcset="" crossorigin="anonymous" class="rightImgExpression ">
                                 <div class="chooseDiv">
                             <input type="checkbox" name="iptChoose" id="" class="iptChoose  ipt">
                           </div></div>
@@ -321,13 +334,14 @@ $().ready(function () {
                           </div>`;
                         } else {
                             newTalk = `<div class="dc">
-                            <div class="gu roleOverall roleOverallTopMargin" data-type="${listOne.type}" data-name="${listOne.mark}" data-index="${listOne.index}">
+                            <div class="gu roleOverall roleOverallTopMargin" data-isyhz="false" data-type="${listOne.type}" data-name="${listOne.mark}" data-index="${listOne.index}">
                               <div class="divImg">
+                              <div class="ugbhgjh"><img src="images/t.png" alt="" srcset=""></div>
                                 <div class="xvb replaceAvatar"></div>
                                 <img src="${listOne.base64.indexOf(a) >= 0 ? dataURItoBlob(listOne.base64) : listOne.path}" crossorigin="anonymous" alt="" class="roleImg" srcset="">
                               </div>
                               <div class="roleTb"><span class="roleNameSpan">${listOne.name}</span>
-                                <div class="roleRemarkDivImg"><img src="${listOne.content}" alt="" srcset="" class="rightImgExpression ">
+                                <div class="roleRemarkDivImg"><img src="${listOne.content}" alt="" crossorigin="anonymous" srcset="" class="rightImgExpression ">
                                 <div class="chooseDiv">
                             <input type="checkbox" name="iptChoose" id="" class="iptChoose  ipt">
                           </div></div>
@@ -343,15 +357,16 @@ $().ready(function () {
             case 'img':
                 //开启右侧头像
                 if (listOne.rtx == "rtx") {
-                    if ((tdc.data("name") == listOne.mark) && (tdc.data("names") == listOne.name)) {
+                    if (((tdc.data("name") == listOne.mark) && (tdc.data("names") == listOne.name)) && tdc.data("isyhz")) {
                         newTalk = `<div class="dc">
-                    <div data-index="${listOne.index}" data-type="${listOne.type}" data-name="${listOne.mark}" class="gu roleOverall rightRoleOverall">
+                    <div data-index="${listOne.index}" data-type="${listOne.type}" data-isyhz="false" data-name="${listOne.mark}" class="gu roleOverall rightRoleOverall">
                       <div class="dfsdfYHZ">
                         <div class="chooseDivYHZ">
                           <input type="checkbox" name="iptChoose" id="" class="iptChooseYHZ ipt">
                         </div>
                       </div>
                       <div class="divImg">
+                      <div class="ugbhgjh disNoneD"><img src="images/t.png" alt="" srcset=""></div>
                         <div class="xvb replaceAvatar"></div>
                         <img src="${listOne.base64.indexOf(a) >= 0 ? dataURItoBlob(listOne.base64) : listOne.path}" crossorigin="anonymous" alt="" class="roleImg width0" srcset="">
                       </div>
@@ -372,13 +387,14 @@ $().ready(function () {
 
                     } else {
                         newTalk = `<div class="dc">
-                        <div data-index="${listOne.index}" data-type="${listOne.type}" data-name="${listOne.mark}"  class="gu roleOverall rightRoleOverall roleOverallTopMargin">
+                        <div data-index="${listOne.index}" data-type="${listOne.type}" data-isyhz="false" data-name="${listOne.mark}"  class="gu roleOverall roleOverallTopMargin rightRoleOverall">
                           <div class="dfsdfYHZ">
                             <div class="chooseDivYHZ">
                               <input type="checkbox" name="iptChoose" id="" class="iptChooseYHZ ipt">
                             </div>
                           </div>
                           <div class="divImg">
+                          <div class="ugbhgjh"><img src="images/t.png" alt="" srcset=""></div>
                             <div class="xvb"></div>
                             <img src="${listOne.base64.indexOf(a) >= 0 ? dataURItoBlob(listOne.base64) : listOne.path}" crossorigin="anonymous" alt="" class="roleImg" srcset="">
                           </div>
@@ -389,7 +405,7 @@ $().ready(function () {
                               </div>
                               <div class="yb">
                                 <div class="Righthorn qp"></div>
-                                <img src="${dataURItoBlob(listOne.content)}" alt="" srcset="" class="rightImg rightImg1">
+                                <img src="${dataURItoBlob(listOne.content)}" alt="" srcset="" crossorigin="anonymous" class="rightImg rightImg1">
                               </div>
                             </div>
                           </div>
@@ -399,40 +415,41 @@ $().ready(function () {
                 } else {
                     if (listOne.roleId == 9999) {
                         if ((tdc.data("name") == listOne.mark)) {
-                            newTalk = `<div class="dc"><div data-index="${listOne.index}"data-type="${listOne.type}" data-name="${listOne.mark}" class="gu roleOverall rightRoleOverall ">
+                            newTalk = `<div class="dc"><div data-index="${listOne.index}" data-isyhz="false" data-type="${listOne.type}" data-name="${listOne.mark}" class="gu roleOverall rightRoleOverall ">
                     <div class="dfsdfYHZ">
                       <div class="chooseDivYHZ">
                         <input type="checkbox" name="iptChoose" id="" class="iptChooseYHZ  ipt">
                       </div>
                       <div class="Righthorn qp"></div>
-                      <img src="${dataURItoBlob(listOne.content)}" alt="" srcset=""
+                      <img src="${dataURItoBlob(listOne.content)}" crossorigin="anonymous" alt="" srcset=""
                         class="rightImg rightImg1">
                     </div>
                   </div></div>`;
                         } else {
-                            newTalk = `<div class="dc roleOverallTopMargin"><div data-index="${listOne.index}"data-type="${listOne.type}" data-name="${listOne.mark}" class="gu roleOverall rightRoleOverall ">
+                            newTalk = `<div class="dc roleOverallTopMargin"><div data-index="${listOne.index}" data-isyhz="false" data-type="${listOne.type}" data-name="${listOne.mark}" class="gu roleOverall rightRoleOverall ">
                     <div class="dfsdfYHZ">
                       <div class="chooseDivYHZ">
                         <input type="checkbox" name="iptChoose" id="" class="iptChooseYHZ  ipt">
                       </div>
                       <div class="Righthorn qp"></div>
-                      <img src="${dataURItoBlob(listOne.content)}" alt="" srcset=""
+                      <img src="${dataURItoBlob(listOne.content)}" crossorigin="anonymous" alt="" srcset=""
                         class="rightImg rightImg1">
                     </div>
                   </div></div>`;
                         }
 
                     } else {
-                        if ((tdc.data("name") == listOne.mark) && (tdc.data("names") == listOne.name)) {
+                        if ((tdc.data("name") == listOne.mark) && (tdc.data("names") == listOne.name) && !tdc.data("isyhz")) {
                             newTalk = `<div class="dc">
-                  <div class="gu roleOverall" data-names="${listOne.name}" data-type="${listOne.type}" data-name="${listOne.mark}" data-index="${listOne.index}">
+                  <div class="gu roleOverall" data-type="${listOne.type}" data-isyhz="false" data-name="${listOne.mark}" data-index="${listOne.index}">
                     <div class="divImg">
+                    <div class="ugbhgjh disNoneD"><img src="images/t.png" alt="" srcset=""></div>
                       <div class="xvb replaceAvatar"></div>
                       <img src="${listOne.base64.indexOf(a) >= 0 ? dataURItoBlob(listOne.base64) : listOne.path}" crossorigin="anonymous" alt="" class="roleImg width0" srcset="">
                     </div>
                     <div class="roleTb"><span class="roleNameSpan width0">${listOne.name}</span>
                       <div class="roleRemarkDivImg">
-                        <div class="horn qp qpW"></div><img src="${dataURItoBlob(listOne.content)}" alt="" srcset="" class="rightImg rightImg2">
+                        <div class="horn qp qpW"></div><img src="${dataURItoBlob(listOne.content)}" crossorigin="anonymous" alt="" srcset="" class="rightImg rightImg2">
                         <div class="chooseDiv">
                         <input type="checkbox" name="iptChoose" id="" class="iptChoose  ipt">
                       </div>
@@ -442,14 +459,15 @@ $().ready(function () {
                 </div>`;
                         } else {
                             newTalk = `<div class="dc">
-                        <div class="gu roleOverall roleOverallTopMargin" data-names="${listOne.name}" data-type="${listOne.type}" data-name="${listOne.mark}" data-index="${listOne.index}">
+                        <div class="gu roleOverall roleOverallTopMargin" data-names="${listOne.name}" data-isyhz="false" data-type="${listOne.type}" data-name="${listOne.mark}" data-index="${listOne.index}">
                           <div class="divImg">
+                          <div class="ugbhgjh"><img src="images/t.png" alt="" srcset=""></div>
                             <div class="xvb"></div>
                             <img src="${listOne.base64.indexOf(a) >= 0 ? dataURItoBlob(listOne.base64) : listOne.path}" crossorigin="anonymous" alt="" class="roleImg" srcset="">
                           </div>
                           <div class="roleTb"><span class="roleNameSpan">${listOne.name}</span>
                             <div class="roleRemarkDivImg">
-                              <div class="horn qp"></div><img src="${dataURItoBlob(listOne.content)}" alt="" srcset="" class="rightImg rightImg2">
+                              <div class="horn qp"></div><img src="${dataURItoBlob(listOne.content)}" crossorigin="anonymous" alt="" srcset="" class="rightImg rightImg2">
                               <div class="chooseDiv">
                         <input type="checkbox" name="iptChoose" id="" class="iptChoose  ipt">
                       </div>
@@ -465,18 +483,17 @@ $().ready(function () {
                 break;
             case 'txt':
                 //开启右侧头像
-                console.log(listOne, 111);
                 if (listOne.rtx == "rtx") {
-                    console.log(tdc.data("name"), listOne.mark, listOne.name)
-                    if ((tdc.data("name") == listOne.mark && tdc.data("names") == listOne.name) && tdc.data("isYhz")) {
+                    if ((tdc.data("name") == listOne.mark && tdc.data("names") == listOne.name) && tdc.data("isyhz")) {
                         newTalk = `<div class="dc">
-                    <div data-index="${listOne.index}" data-isYhz="true" data-type="${listOne.type}" data-names="${listOne.name}" data-name="${listOne.mark}" class="gu roleOverall rightRoleOverallr">
+                    <div data-index="${listOne.index}" data-isyhz="true" data-type="${listOne.type}"  data-names="${listOne.name}" data-name="${listOne.mark}" class="gu roleOverall rightRoleOverallr">
                       <div class="dfsdfYHZ">
                         <div class="chooseDivYHZ">
                           <input type="checkbox" name="iptChoose" id="" class="iptChooseYHZ ipt">
                         </div>
                       </div>
                       <div class="divImg">
+                      <div class="ugbhgjh disNoneD"><img src="images/t.png" alt="" srcset=""></div>
                         <div class="xvb replaceAvatar"></div>
                         <img src="${listOne.base64.indexOf(a) >= 0 ? dataURItoBlob(listOne.base64) : listOne.path}" crossorigin="anonymous" alt="" class="roleImg width0" srcset="">
                       </div>
@@ -497,13 +514,14 @@ $().ready(function () {
                   </div>`;
                     } else {
                         newTalk = `<div class="dc">
-                    <div data-index="${listOne.index}" data-isYhz="true" data-type="${listOne.type}" data-names="${listOne.name}" data-name="${listOne.mark}" class="gu roleOverall rightRoleOverall roleOverallTopMargin">
+                    <div data-index="${listOne.index}" data-isyhz="true" data-type="${listOne.type}"  data-names="${listOne.name}" data-name="${listOne.mark}" class="gu roleOverall roleOverallTopMargin rightRoleOverall">
                       <div class="dfsdfYHZ">
                         <div class="chooseDivYHZ">
                           <input type="checkbox" name="iptChoose" id="" class="iptChooseYHZ ipt">
                         </div>
                       </div>
                       <div class="divImg">
+                      <div class="ugbhgjh"><img src="images/t.png" alt="" srcset=""></div>
                         <div class="xvb"></div>
                         <img src="${listOne.base64.indexOf(a) >= 0 ? dataURItoBlob(listOne.base64) : listOne.path}" crossorigin="anonymous" alt="" class="roleImg" srcset="">
                       </div>
@@ -526,7 +544,7 @@ $().ready(function () {
                 } else {
                     if (listOne.roleId == 9999) {
                         if ((tdc.data("name") == listOne.mark)) {
-                            newTalk = `<div class="dc"><div data-index="${listOne.index}" data-type="${listOne.type}" data-name="${listOne.mark}" class="gu roleOverall rightRoleOverall">
+                            newTalk = `<div class="dc"><div data-index="${listOne.index}" data-isyhz="false" data-type="${listOne.type}" data-name="${listOne.mark}" class="gu roleOverall rightRoleOverall">
                     <div class="dfsdfYHZ width100">
                       <div class="chooseDivYHZ">
                         <input type="checkbox" name="iptChoose" id="" class="iptChooseYHZ  ipt">
@@ -538,7 +556,7 @@ $().ready(function () {
                     </div>
                   </div></div>`;
                         } else {
-                            newTalk = `<div class="dc roleOverallTopMargin"><div data-index="${listOne.index}" data-type="${listOne.type}" data-name="${listOne.mark}" class="gu roleOverall rightRoleOverall ">
+                            newTalk = `<div class="dc roleOverallTopMargin"><div data-index="${listOne.index}" data-isyhz="false" data-type="${listOne.type}" data-name="${listOne.mark}" class="gu roleOverall rightRoleOverall ">
                             <div class="dfsdfYHZ width100">
                               <div class="chooseDivYHZ">
                                 <input type="checkbox" name="iptChoose" id="" class="iptChooseYHZ  ipt">
@@ -553,10 +571,11 @@ $().ready(function () {
 
                     } else {
 
-                        if ((tdc.data("name") == listOne.mark) && (tdc.data("names") == listOne.name)) {
+                        if ((tdc.data("name") == listOne.mark) && (tdc.data("names") == listOne.name) && !tdc.data("isyhz")) {
                             newTalk = `<div class="dc">
-                        <div class="gu roleOverall" data-names="${listOne.name}" data-type="${listOne.type}" data-name="${listOne.mark}" data-index="${listOne.index}">
+                        <div class="gu roleOverall" data-names="${listOne.name}" data-type="${listOne.type}" data-isyhz="false" data-name="${listOne.mark}" data-index="${listOne.index}">
                           <div class="divImg">
+                          <div class="ugbhgjh disNoneD"><img src="images/t.png" alt="" srcset=""></div>
                             <div class="xvb replaceAvatar"></div>
                             <img src="${listOne.base64.indexOf(a) >= 0 ? dataURItoBlob(listOne.base64) : listOne.path}" crossorigin="anonymous" alt="" class="roleImg width0" srcset="">
                           </div>
@@ -575,8 +594,9 @@ $().ready(function () {
                       </div>`;
                         } else {
                             newTalk = `<div class="dc">
-                    <div class="gu roleOverall roleOverallTopMargin" data-names="${listOne.name}" data-type="${listOne.type}" data-name="${listOne.mark}" data-index="${listOne.index}">
+                    <div class="gu roleOverall roleOverallTopMargin" data-names="${listOne.name}" data-isyhz="false" data-type="${listOne.type}" data-name="${listOne.mark}" data-index="${listOne.index}">
                       <div class="divImg">
+                      <div class="ugbhgjh"><img src="images/t.png" alt="" srcset=""></div>
                         <div class="xvb"></div>
                         <img src="${listOne.base64.indexOf(a) >= 0 ? dataURItoBlob(listOne.base64) : listOne.path}" crossorigin="anonymous" alt="" class="roleImg" srcset="">
                       </div>
@@ -691,6 +711,7 @@ $().ready(function () {
                         newTalk = `<div class="dc">
                             <div class="gu roleOverall roleOverallTopMargin" data-names="${listOne.name}" data-type="${listOne.type}"  data-index="${listOne.index}">
                               <div class="divImg">
+                              <div class="ugbhgjh"><img src="images/t.png" alt="" srcset=""></div>
                                 <div class="xvb"></div>
                                 <img src="${listOne.base64.indexOf(a) >= 0 ? dataURItoBlob(listOne.base64) : listOne.path}" crossorigin="anonymous" alt="" class="roleImg" srcset="">
                               </div>
@@ -793,7 +814,6 @@ $().ready(function () {
         $("#box").addClass("height100");
         var scrollHeight = $('#box').prop("scrollHeight") + 9999
         $('#box').scrollTop(scrollHeight);
-        console.log("触发", scrollHeight);
     }
     $("#box").on('focusout', '.statistics', function () {
         var ele = $(this);
@@ -822,38 +842,45 @@ $().ready(function () {
     function getRoleJson(type) {
         var json = new Object();
         var text = $("#text").val();
+        var obj;
         var value;
         var base64;
         var avatars = $("img[class*='imgd']");
-        if (avatars.length <= 0) {
-            value = 9999;
-        } else {
-            value = chooseAvatar.roleId
-            base64 = getBase64(chooseAvatar.roleId);
+        if (isR) {
+            json.rtx = "rtx";
+            //obj=yhzObj;
         }
-
-        json.index = cen;
+        obj = chooseAvatar;
+        if (avatars.length <= 0 && !isR) {
+            value = "9999";
+        } else {
+            value = obj.roleId
+            base64 = getBase64(obj.roleId);
+        }
+        console.log(obj, isR);
+        json.index = cen.toString();
         json.content = text;
-        if (value == 9999) {
-            json.roleId = 9999;
+        if (value == "9999") {
+            json.roleId = "9999";
             json.mark = '9999';
         } else {
-            json.roleId = chooseAvatar.roleId,
-                json.imgId = chooseAvatar.imgId,
-                json.name = chooseAvatar.name,
+            json.roleId = obj.roleId.toString(),
+                json.imgId = obj.imgId.toString(),
+                json.name = obj.name,
                 json.content = text,
-                json.mark = chooseAvatar.mark;
-            if (chooseAvatar.roleId != undefined) {
+                json.mark = obj.mark;
+            if (obj.roleId != undefined) {
                 json.base64 = '';
-                json.path = chooseAvatar.path;
+                json.path = obj.path;
             } else {
-                if (getNewRoleType(chooseAvatar.roleId) == "newRole" || getNewRoleType(chooseAvatar.roleId) == null) {
+                if (getNewRoleType(obj.roleId) == "newRole" || getNewRoleType(obj.roleId) == null) {
                     json.base64 = base64;
                 }
-                json.path = chooseAvatar.path
+                json.path = obj.path
             }
         }
         json.type = type;
+        console.log(json)
         return json
     }
 
@@ -898,25 +925,6 @@ $().ready(function () {
         }
         switch (json.type) {
             case 'Transfer':
-                // if (avatars.length > 0) {
-                //     json.roleId = chooseAvatar.roleId,
-                //         json.imgId = chooseAvatar.imgId,
-                //         json.name = chooseAvatar.name,
-                //         json.content = text,
-                //         json.mark = chooseAvatar.mark;
-                //     if (chooseAvatar.roleId != undefined) {
-                //         json.base64 = '';
-                //         json.path = chooseAvatar.path;
-                //     } else {
-                //         if (getNewRoleType(chooseAvatar.roleId) == "newRole" || getNewRoleType(chooseAvatar.roleId) == null) {
-                //             json.base64 = base64;
-                //         }
-                //         json.path = chooseAvatar.path
-                //     }
-                // } else {
-                //     json.roleId = '9999';
-                //     json.mark = '9999';
-                //     json.content = text;
                 json = getRoleJson(json.type);
                 json.Transfer = "djs";
                 break;
@@ -969,16 +977,27 @@ $().ready(function () {
     //加载未删除数据
     function loadBoxData() {
         getTempJson().then(res => {
-            $('#box').html("");
-            boxJsonArray = res.boxJson;
-            var tempArr = [];
-            for (let i = 0; i < boxJsonArray.length; i++) {
-                tempArr.push(boxJsonArray[i].index);
-                var newTalk = createHtml(boxJsonArray[i]);
-                $('#box').append(newTalk);
+            if (res == undefined || $.isEmptyObject(res.boxJson)) {
+                showTips();
+                return;
+            } else {
+                $('#box').html("");
+                boxJsonArray = res.boxJson;
+                showTips();
+                var tempArr = [];
+                for (let i = 0; i < boxJsonArray.length; i++) {
+                    tempArr.push(parseInt(boxJsonArray[i].index));
+                    var newTalk = createHtml(boxJsonArray[i]);
+                    $('#box').append(newTalk);
+                    if (boxJsonArray[i].rtx != "") {
+
+                    }
+                }
+                cen = $.isEmptyObject(tempArr) ? 0 : Math.max.apply(null, tempArr) + 1;
+                ToBtm();
+
             }
-            cen = $.isEmptyObject(tempArr) ? 0 : Math.max.apply(null, tempArr) + 1;
-            ToBtm();
+
         })
 
     }
@@ -988,23 +1007,12 @@ $().ready(function () {
         var a = confirm("确定要重置全部角色名称吗？");
         if (a) {
             deleteRoleCopy().then(res => {
-                window.location.reload();
+                //window.location.reload();
+                Init();
             })
 
         }
     });
-    /**
-     * 将localstrong中的存档转入indexdb，临时使用，下个版本废弃
-     */
-    function localUpdateIndexDb() {
-        var json = JSON.parse(localStorage.getItem("boxJson"));
-        if (json != "" && json != null) {
-            LocalMigrate(json).then(res => {
-                localStorage.clear();
-            })
-        }
-
-    }
     //跳转到新网址
     function toNewPath() {
         var url = window.location.href;
@@ -1023,11 +1031,83 @@ $().ready(function () {
         $(".overlay").addClass("disNoneD");
         $(".donut").addClass("disNoneD");
         $(".bodyN").removeClass("opacity05");
+        LoadSetOptions();
     }
-    //初始化数据
+    /**
+     * 显示图标功能介绍
+     */
+    function showTips() {
+        if ($.isEmptyObject(boxJsonArray)) {
+            $(".yufuyg").removeClass("disNoneD");
+            console.log(device);
+            if (device == "PC") {
+                $(".opuuji").removeClass("disNoneD");
+            } else {
+                $(".opuuji").addClass("disNoneD");
+            }
+        } else {
+            $(".yufuyg").addClass("disNoneD");
+            $(".opuuji").addClass("disNoneD");
+        }
+
+    } /**
+    * 拖动内容，滚动条滚动，横向
+    *@param {string} parent 需要拖动的面板的定位父级
+    * @param {string} container 需要拖动的面板
+    */
+    function dragMoveX(parent, container) {
+        var flag;
+        var downX;
+        var scrollLeft;
+        //鼠标按下
+        $(parent).on("mousedown", container, function (event) {
+            flag = true;
+            downX = event.clientX;
+            scrollLeft = $(this).scrollLeft();
+        });
+        //鼠标移动
+        $(container).on("mousemove", function (event) {
+            event.stopPropagation()
+            if (flag) {
+                var moveX = event.clientX;
+                var scrollX = moveX - downX;
+                // console.log("moveX" + moveX);
+                // console.log("scrollX" + scrollX);
+                if (scrollX < 0 && scrollLeft > 0) {
+                    $(this).scrollLeft(scrollLeft - scrollX)
+                }
+                else {
+                    $(this).scrollLeft(scrollLeft - scrollX)
+                }
+            }
+        });
+        //鼠标释放
+        $(container).on("mouseup", function (event) {
+            flag = false;
+            event.stopPropagation();
+        });
+        /**
+         * 注意：与 mouseout 事件不同，mouseleave 事件只有在鼠标指针离开被选元素时被触发，mouseout 事件在鼠标指针离开任意子元素时也会被触发。参见页面底部演示实例。
+         * 所以：如果mouseout的子元素存在溢出，并添加了超出加滚动，那么刚进入也会触发该事件，所以这里就不能使用。
+         * */
+        //鼠标移出元素
+        $(container).on("mouseleave", function (event) {
+            event.stopPropagation();
+            flag = false;
+            if (event.pageX < 0 || event.pageX > document.body.offsetWidth) {
+                flag = false;
+            }
+        });
+    }
+
+
+    /**
+     * 初始化
+     */
     function Init() {
-        toNewPath();
+        //toNewPath();
         Initd()
+
         $("#knopiji").html('');
         $.getJSON("data/roles.json", function (data) {
             $.getJSON("data/imagese.json", function (dataImg) {
@@ -1042,7 +1122,7 @@ $().ready(function () {
                     //循环展示角色
                     var html = '';
                     var b = '';
-                    var Aa = `<div class='centerRoleArraybtn n'>`;
+                    var Aa = `<div class='centerRoleArraybtn n no_copy'>`;
                     var aa = `</div>`;
                     for (let index = 0; index < roleArray.length; index++) {
                         $(".center").append("<div class='sonbsc'><div class='xq' data-id='" + roleArray[index].id + "'><div class='wwww'><img crossOrigin='anonymous' src='" + roleArray[index].imgURl + "' alt='' height=75px; width=75px; class='sdad'><span class='roleName'>" + roleArray[index].roleName + "</span><a href='javascript:;' class='adb'><img src='images/updateName.png' class='updateName' alt='' srcset=''></a></div><img src='" + roleArray[index].belongsImgURL + "' class='ddddddddddd' alt='' srcset=''></div></div>")
@@ -1077,9 +1157,11 @@ $().ready(function () {
                     }
                     //console.log(roleArray);
                     $("#knopiji").html(html);
+                    dragMoveX("#knopiji", ".centerRoleArraybtn");
                     LoadAvatar().then(res => {
                         if (res != undefined) {
-                            roleImgArray = res;
+                            thisRoleImg = res.chooseImgId;
+                            roleImgArray = res.AvatarArray;
                             var conImg = $(".conImg");
                             for (let index = 0; index < roleImgArray.length; index++) {
                                 for (let i = 0; i < conImg.length; i++) {
@@ -1091,6 +1173,11 @@ $().ready(function () {
                                 }
                             }
                             btnAvatars();
+                            $(".conAvataar").each(function () {
+                                if ($(this).data("imgid") == thisRoleImg) {
+                                    $(this).click();
+                                }
+                            })
                         }
 
                     })
@@ -1099,16 +1186,10 @@ $().ready(function () {
             });
         }
         );
-        ExpressionInit(1);
-        getTempJson().then(res => {
-            if (res != null && res != '') {
-                loadBoxData();
-            }
-        });
+        ExpressionInit();
+        loadBoxData();
     }
-    $("#test").click(function () {
-        test();
-    })
+
     //点击选取头像加入到下方准备
     $("#knopiji").on('click', '.conImg', function (e) {
         $(this).toggleClass("imgb bj");
@@ -1170,32 +1251,46 @@ $().ready(function () {
             for (let index = 0; index < copyList.length; index++) {
                 if (copyList[index].id == id) {
                     copyList[index].roleName = newName;
-                    updateRoleName(id, newName).then(res => {
-                        $(d).parent().siblings("span").html(newName)
-                    })
-                    ReCheckAvatar();
+
+                    //ReCheckAvatar();
+
                     break;
                 }
             }
+            updateRoleName(copyList);
+            setTimeout(() => {
+                Init();
+            }, 500);
+
+            $(d).parent().siblings("span").html(newName)
         }
     }
     //初始化表情包
-    function ExpressionInit(num) {
+    function ExpressionInit() {
         $('.imgContent').html("");
         var st = "";
         var a = "";
         var ele = $(".yhivdfbs");
-        if (num == 1) {
-            st = "data/Expression.json";
-            a = "images/Expression/";
-        } else {
-            st = "data/roleExpression.json";
-            a = "images/roleExpression/";
+        switch (expressionCount) {
+            case 1:
+                st = "data/Expression.json";
+                a = "images/Expression/";
+                break;
+            case 2:
+                st = "data/roleExpression.json";
+                a = "images/roleExpression/";
+                break;
+            case 3:
+                st = "data/dExpression.json";
+                a = "images/dExpression/";
+                break;
+            default:
+                break;
         }
         $.getJSON(st,
             function (data) {
                 data.forEach(element => {
-                    element.expressionName = a + element.expressionName + '.png';
+                    element.expressionName = a + element.expressionName;
                 });
                 for (let i = 0; i < data.length; i++) {
                     $('.imgContent').append("<img src='" + data[i].expressionName + "' alt='' srcset='' class='hgfhdft'>");
@@ -1210,29 +1305,6 @@ $().ready(function () {
     function ExpressionSend(e) {
         var imgObj = e.attr('src');
         var newTalk = '';
-        // var avatars = $("img[class*='imgd']");
-        // if (avatars.length <= 0) {
-        //     value = 9999;
-        // } else {
-        //     value = chooseAvatar.roleId
-        // }
-        // if (value == 9999) {
-        //     json.roleId = 9999;
-        //     json.content = imgObj;
-        //     json.mark = '9999';
-        //     newTalk = createHtml(json)
-        //     insertOrContinue(newTalk, json);
-        // } else {
-        //     json.roleId = chooseAvatar.roleId,
-        //         json.imgId = chooseAvatar.imgId,
-        //         json.path = chooseAvatar.path,
-        //         json.name = chooseAvatar.name,
-        //         json.content = imgObj;
-        //     json.mark = chooseAvatar.mark;
-        //     json.base64 = chooseAvatar.roleId == "undefined" ? chooseAvatar.path : getBase64(chooseAvatar.roleId);
-        //     newTalk = createHtml(json)
-        //     insertOrContinue(newTalk, json);
-        // }
         var json = getRoleJson("Expression");
         json.content = imgObj;
         newTalk = createHtml(json)
@@ -1245,7 +1317,6 @@ $().ready(function () {
         $("#js").removeClass("border2sy");
         roleImgArray = new Array();
         var avatars = $("img[class*='bj']");
-        console.log(avatars);
         for (var i = 0; i < avatars.length; i++) {
             var newObj = {
                 roleId: $(avatars[i]).data("roleid"),
@@ -1255,8 +1326,22 @@ $().ready(function () {
             }
             roleImgArray.push(newObj);
         }
-        updateAvatar(roleImgArray);
+        if (e.is(".bj")) {
+            thisRoleImg = e.data("imgid");
+        } else {
+            thisRoleImg = "";
+        }
+        var a = {
+            chooseImgId: thisRoleImg,
+            AvatarArray: roleImgArray
+        }
+        updateAvatar(a);
         btnAvatars();
+        $(".conAvataar").each(function () {
+            if ($(this).data("imgid") == thisRoleImg) {
+                $(this).click();
+            }
+        })
     }
     //生成底部备选头像列表
     function btnAvatars() {
@@ -1266,9 +1351,8 @@ $().ready(function () {
             txt = txt + "<img data-name=" + item.mark + " class='conAvataar zz' data-roleid='" + item.roleId + "' data-imgId='" + item.imgId + "' src='" + item.imgPath + "' srcset=''>";
         });
         $(".bottomImgs").html(txt);
+        dragMoveX(".bottom1", ".bottomImgs");
     }
-
-
     //点击选取底部备选头像
     $(".bottom1").on("click", ".conAvataar", function () {
         if ($("#js").is(".border2sy")) {
@@ -1280,7 +1364,7 @@ $().ready(function () {
                 }
             })
             roleImgArray = temp;
-            updateAvatar(roleImgArray);
+
             $(this).remove();
             if (roleImgArray == "") {
                 $("#js").removeClass("border2sy");
@@ -1296,16 +1380,20 @@ $().ready(function () {
             })
             return;
         }
+
+
         $(this).toggleClass("zz");
         $(this).siblings().addClass("zz");
         if ($(this).hasClass("imgd")) {
             $(this).removeClass("imgd");
+            thisRoleImg = "";
         }
         else {
             $(".conAvataar").each(function () {
                 $(this).removeClass("imgd");
             })
             $(this).addClass("imgd");
+            thisRoleImg = $(this).data("imgid");
             var obj = {
                 roleId: $(this).data("roleid"),
                 imgId: $(this).data("imgid"),
@@ -1321,7 +1409,14 @@ $().ready(function () {
             obj.mark = $(this).data('name');
             obj.name = roleName;
             chooseAvatar = obj;
+
+
         }
+        var a = {
+            chooseImgId: thisRoleImg,
+            AvatarArray: roleImgArray
+        }
+        updateAvatar(a);
     })
     /**
      * 通过id获取base64头像
@@ -1385,6 +1480,7 @@ $().ready(function () {
                     cen = 0
                     boxJsonArray = new Array()
                     deleteTempJson();
+                    showTips()
                 }
             }
         }
@@ -1392,7 +1488,7 @@ $().ready(function () {
     //删除上一句
     $("#delOne").click(function () {
         var editOpen = $(".editOpen");
-        var lastDc = $("#box").children().last();
+        var lastDc = $("#box").find(".dc").last();
         if (editOpen.length > 0) {
             for (let i = 0; i < boxJsonArray.length; i++) {
                 if (editOpen.prev().find(".gu").data("index") == boxJsonArray[i].index) {
@@ -1407,6 +1503,7 @@ $().ready(function () {
             lastDc.remove();
         }
         updateTempJson(boxJsonArray);
+        showTips()
     });
     //发送图片
     $("#imgUpload").click(function () {
@@ -1438,17 +1535,96 @@ $().ready(function () {
             if (res != undefined) {
                 var html = `<div class="setList">
               <div>字体大小<input type="text" id="guFont-size" value="${res.guFont_size}" placeholder="数字，默认1.2">rem</div>
-              <div>背景颜色<input type="text" name="" id="guBackColor" value="${res.guBackColor}" placeholder="white、#ffffff、rgb(0,0,0)"><div style="display:inline;" class="whDiv whDiv2 layui-icon layui-icon-tips-fill"></div></div>
+              <div>背景颜色<input type="text" name="" id="guBackColor" value="${res.guBackColor}"
+                  placeholder="white、#ffffff、rgb(0,0,0)">
+                <div style="display:inline;" class="whDiv whDiv2 layui-icon layui-icon-tips-fill"></div>
+              </div>
               <div>旁白字体大小<input type="text" name="" id="guAsideFont-size" value="${res.guAsideFont_size}" placeholder="数字，默认1.1">rem</div>
               <div>下载图片清晰度等级<input type="text" name="" id="loadImg-scale" value="${res.loadImg_scale}" placeholder="1-4，不要乱填！"></div>
-              <div>上传图片清晰度<input type="text" name="" id="uploadImg-scale" value="${res.uploadImg_scale}" placeholder="0-1"><div style="display:inline;" class="whDiv whDiv3 layui-icon layui-icon-tips-fill"></div></div>
+              <div>上传图片清晰度<input type="text" name="" id="uploadImg-scale" value="${res.uploadImg_scale}" placeholder="0-1">
+                <div style="display:inline;" class="whDiv whDiv3 layui-icon layui-icon-tips-fill"></div>
+              </div>
+               <div>水印内容<input type="text" name="" id="waterContent" value="${res.water.content}" maxlength="8" placeholder="为空则不开启水印"></div>
+              <div>水印颜色<input type="text" name="" id="waterColor" value="${res.water.color}"placeholder="默认白色">
+              <div style="display:inline;" class="whDiv whDiv2 layui-icon layui-icon-tips-fill"></div>
+              </div>
               <div><button type="button" id="setSave">保存</button></div>
               <div><button type="button" id="setRe">重置</button></div>
-               <div><button type="button" id="reBmAvatar">重置底部备选头像列表</button></div>
+              <div><button type="button" id="reBmAvatar">重置底部备选头像列表</button></div>
+              <h2>存档相关</h2>
+              <div class="uuujkih">
+                <div>
+                  <div><button type="button" id="dccd">导出编辑内容</button></div>
+                  <div><button type="button" id="drcd">导入编辑内容</button></div>
+                </div>
+                <div>
+                  <div><button type="button" id="dccds">导出存档列表</button></div>
+                  <div><button type="button" id="drcds">导入存档列表</button></div>
+                </div>
+              </div>
+                 <h3>导入gugutalk读取内容</h3><span>测试功能！</span>
+            <div><button type="button" id="drgugu">导入guguTalk</button></div>
             </div>`;
                 $("#knopiji").append(html);
             }
         })
+
+    })
+    //导入gugutalk
+    $("#knopiji").on("click", "#drgugu", function () {
+        if (confirm("导入内容会使当前编辑内容消失！")) {
+            var link = $(`<input type="file" accept="image/*" name="" id="">`);
+            link.on("change", function () {
+                console.log(2)
+                var imgP = $(this);
+                var imgObj = imgP[0].files[0];
+                var reader = new FileReader();//读取文件的方法 初始化
+                reader.onload = () => {
+                    var img = new Image();
+                    img.onload = () => {
+                        var height = $("#iuyhbuiy").prop("height");
+                        var width = $("#iuyhbuiy").prop("width")
+                        $("#iuyhbuiy").prop({ "width": width, "height": height })
+                        console.log(width, height);
+                        $("#ca").prop({ "width": width, "height": height })
+                        var canvas = $("#ca")[0].getContext("2d");
+                        canvas.drawImage(img, 0, 0);
+                        var imgInfo = canvas.getImageData(0, 0, width, height);
+                        $("#iuyhbuiy").remove();
+                        $("#ca").remove();
+                        try {
+                            boxJsonArray = decryption(imgInfo.data)
+                            alert("导入成功,请等待页面加载\n长时间处于加载状态请刷新页面");
+                            addTalk(boxJsonArray);
+                            //页面等待动画
+                            $("#app").addClass("opacity05");
+                            $(".donut").removeClass("disNoneD");
+                            $(".donut").css("opacity", "1")
+                            $(".overlay").removeClass("disNoneD");
+                            setTimeout(function () {
+                                loadBoxData();
+                                $("#app").removeClass("opacity05");
+                                $(".donut").addClass("disNoneD");
+                                $(".overlay").addClass("disNoneD");
+                                $("#box").css("width", "auto")
+                            }, 2000);
+                        } catch {
+                            alert("导入失败,请刷新页面");
+                            window.location.reload();
+                        }
+                    }
+                    img.src = reader.result;
+                    var height = `<img src="${dataURItoBlob(reader.result)}" id="iuyhbuiy" alt="" srcset="">`;
+                    $("#box").append(height);
+                    var canDom = `<div><canvas width="100" height="100" id="ca"></canvas></div>`;
+                    $("#box").append(canDom);
+                }
+
+                reader.readAsDataURL(imgObj);
+
+            })
+            link.click();
+        }
 
     })
     $("#knopiji").on("click", ".whDiv3", function () {
@@ -1456,24 +1632,37 @@ $().ready(function () {
     })
     //颜色格式提示
     $("#knopiji").on("click", ".whDiv2", function () {
-        alert("支持颜色格式如下,例：\n英文单词：white\n16进制：#FFFFFF\nrgb格式：rgb(207,207,206)");
+        alert("支持颜色格式如下,例：\n英文单词：white\n16进制：#FFFFFF\nrgb格式：rgb(255,247,225)逗号必须是英文半角符号");
     })
     //保存设置参数
     $("#knopiji").on("click", "#setSave", function () {
-        var guFont_size = $("#guFont-size").val();
-        var guBackColor = $("#guBackColor").val()
-        var guAsideFont_size = $("#guAsideFont-size").val();
-        var loadImg_scale = $("#loadImg-scale").val();
-        var uploadImg_scale = $("#uploadImg-scale").val();
-        var options = {
-            guFont_size: guFont_size,
-            guBackColor: guBackColor,
-            guAsideFont_size: guAsideFont_size,
-            loadImg_scale: loadImg_scale,
-            uploadImg_scale: uploadImg_scale
+        try {
+            var guFont_size = $("#guFont-size").val();
+            var guBackColor = $("#guBackColor").val()
+            var guAsideFont_size = $("#guAsideFont-size").val();
+            var loadImg_scale = $("#loadImg-scale").val();
+            var uploadImg_scale = $("#uploadImg-scale").val();
+            var waterContent=$("#waterContent").val().trim();
+            var waterColor=$("#waterColor").val();
+            var options = {
+                guFont_size: guFont_size,
+                guBackColor: guBackColor,
+                guAsideFont_size: guAsideFont_size,
+                loadImg_scale: loadImg_scale,
+                uploadImg_scale: uploadImg_scale,
+                water:{
+                    content:waterContent,
+                    color:waterColor
+                }
+            }
+            setOption(options);
+            updateSetList(options);
+            alert("设置保存成功");
+            window.location.reload();
+        } catch (error) {
+            alert("设置保存失败");
         }
-        setOption(options);
-        updateSetList(options);
+
     })
     /**
      * 启用修改后的设置
@@ -1507,7 +1696,11 @@ $().ready(function () {
             guBackColor: "rgb(207,207,206)",
             guAsideFont_size: "1.1",
             loadImg_scale: "1",
-            uploadImg_scale: "0.2"
+            uploadImg_scale: "0.2",
+            water:{
+                content:"",
+                color:"white"
+            }
         }
         setOption(options);
         $("#guFont-size").val(options.guFont_size)
@@ -1515,7 +1708,11 @@ $().ready(function () {
         $("#guAsideFont-size").val(options.guAsideFont_size);
         $("#loadImg-scale").val(options.loadImg_scale);
         $("#uploadImg-scale").val(options.uploadImg_scale);
+        $("#waterContent").val(options.water.content);
+        $("#waterColor").val(options.water.color);
         updateSetList(options);
+        alert("重置成功");
+        Init();
     })
     //重置底部头像列表
     $("#knopiji").on("click", "#reBmAvatar", function () {
@@ -1529,9 +1726,183 @@ $().ready(function () {
         window.location.reload();
     }
     /**
+     * 将编辑内容写入图片
+     * @param {*} dataUrl 图片地址
+     * @param {*} width 图片宽度
+     * @param {*} height 图片高度
+     * @param {*} n 选中的信息下标数组
+     */
+    function encryption(dataUrl, width, height, n) {
+
+        var canDom = `<div><canvas width="${width}" height="${height}" id="ca"></canvas></div>`;
+        $("#box").append(canDom);
+        var ctx = $("#ca")[0];
+        var canvas = ctx.getContext("2d");
+        //定义图片
+        var img = new Image();
+        img.onload = () => {
+            canvas.drawImage(img, 0, 0);
+            var imgInfo = canvas.getImageData(0, 0, width, height);
+            //获取当前选中内容的二进制格式
+            var array = new Array();
+            if ($.isEmptyObject(n)) {
+                array = boxJsonArray;
+            } else {
+                for (let i = 0; i < n.length; i++) {
+                    array.push(boxJsonArray[n[i]]);
+                }
+            }
+            var jsonstr = JSON.stringify(array);
+            var tempJsonStr = strToBinary(jsonstr);
+            for (let m = 1; m < tempJsonStr.length + 1; m++) {
+                try {
+                    var a = imgInfo.data[m * 4 - 1].toString().split("");
+                    switch (tempJsonStr.charAt(m - 1)) {
+
+                        case "1":
+                            a[a.length - 1] = 1;
+                            break;
+                        case "0":
+                            a[a.length - 1] = 2;
+                            break;
+                        default:
+                            a[a.length - 1] = 0;
+                            break;
+                    }
+                    imgInfo.data[m * 4 - 1] = parseInt(a.join(""));
+                    if (m == tempJsonStr.length) {
+                        imgInfo.data[(m + 2) * 4 - 1] = imgScale;
+                        imgInfo.data[(m + 1) * 4 - 1] = 0;
+                        break;
+                    }
+                } catch {
+                    domtoimage.toPng($("#box")[0], { scale: imgScale, height: height, width: width })
+                        .then(function (dataUrl) {
+                            var link = document.createElement('a');
+                            link.download = 'gugutalk.png';
+                            link.href = dataUrl;
+                            //插入当前编辑内容
+                            link.click();
+                            //还原替换发言人按钮
+                            $(".iptChoose").removeClass("chooseNone");
+                            $(".iptChooseYHZ").removeClass("chooseNone");
+                            $(".zt_cz").removeClass("disNoneD")
+                            $("#app").removeClass("opacity05");
+                            $(".donut").addClass("disNoneD");
+                            $(".overlay").addClass("disNoneD");
+                            $("#box").css("width", "auto")
+                            loadBoxData();
+                            ToBtm();
+                        });
+                }
+
+            }
+            canvas.putImageData(imgInfo, 0, 0)
+            var link = document.createElement('a');
+            link.download = 'gugutalk.png';
+            link.href = ctx.toDataURL();
+            //插入当前编辑内容
+            link.click();
+            //还原替换发言人按钮
+            loadBoxData();
+            ToBtm();
+            //decryption(imgInfo.data);
+        }
+        console.log(3)
+        img.src = dataUrl;
+
+    }
+    /**
+     * 页面加载动画
+     */
+    function jiazai() {
+
+        $("#app").addClass("opacity05");
+        $(".donut").removeClass("disNoneD");
+        $(".donut").css("opacity", "1")
+        $(".overlay").removeClass("disNoneD");
+    }
+    /**
+     * 页面加载完成
+     */
+    function jazaiwancheng() {
+        $("#app").removeClass("opacity05");
+        $(".donut").addClass("disNoneD");
+        $(".overlay").addClass("disNoneD");
+    }
+    //解密图像数据
+    function decryption(data) {
+        var d = "";
+        for (let i = 0; i < data.length; i++) {
+            if (data[i] == 0) {
+                break;
+            }
+            if (i != 0) {
+                var a = data[i * 4 - 1].toString().split("");
+                switch (a[a.length - 1]) {
+                    case "0":
+                        d += " ";
+                        break;
+                    case "1":
+                        d += "1";
+                        break
+                    case "2":
+                        d += "0";
+                        break;
+                }
+            }
+
+        }
+        var str = binaryToStr(d);
+        console.log(str)
+        var json = $.parseJSON(str)
+        return json;
+    }
+    //将二进制字符串转换成Unicode字符串
+    function binaryToStr(str) {
+        var result = [];
+        var list = str.split(" ");
+        for (var i = 0; i < list.length; i++) {
+            var item = list[i];
+            var asciiCode = parseInt(item, 2);
+            var charValue = String.fromCharCode(asciiCode);
+            result.push(charValue);
+        }
+        result.splice(result.length - 1, 1)
+        console.log(result);
+        return result.join('');
+
+    }
+
+    $("#test").click(function () {
+        console.log(strToBinary(JSON.stringify(boxJsonArray)));
+    })
+    /**
+     * 将字符串转换成二进制形式，中间用空格隔开
+     * @param {*} str 传入字符串
+     * @returns 二进制字符串
+     */
+    function strToBinary(str) {
+        var result = [];
+        var list = str.split("");
+        for (var i = 0; i < list.length; i++) {
+            if (i != 0) {
+                result.push(" ");
+            }
+            var item = list[i];
+            var binaryStr = item.charCodeAt().toString(2);
+            result.push(binaryStr);
+            //result.push(" ");
+        }
+        return result.join("");
+    }
+    /**
      * 截图保存
      */
     $("#save").click(function () {
+
+        if ($(".dc").length == 0) return;
+        $("#box").css("width", "500px")
         var b = $(":checked[type='checkbox']").parents(".dc");
         if (b.length > 0) {
             if (confirm("是否只保存选中信息")) {
@@ -1540,9 +1911,21 @@ $().ready(function () {
                 });
             }
         }
-
+        //获取两个选中项
+        var a = $("#box>.dc input[type='checkbox']");
+        //下标数组
+        var n = new Array();
+        //获取选中的下标
+        for (let index = 0; index < a.length; index++) {
+            if ($(a[index]).is(":checked")) {
+                n.push(index);
+            }
+        }
         $("#box").removeClass("height100");
         var scrollHeight = $('#box').prop("scrollHeight");
+        // if(device!="PC"){
+        //     scrollHeight+=20;
+        // }
         var scrollWidth = $('#box').prop("scrollWidth");
         $(".iptChoose").addClass("chooseNone");
         $(".iptChooseYHZ").addClass("chooseNone");
@@ -1553,23 +1936,32 @@ $().ready(function () {
         $("#app").addClass("opacity05");
         $(".donut").removeClass("disNoneD");
         $(".donut").css("opacity", "1")
-        $(".overlay").toggleClass("disNoneD");
-        domtoimage.toJpeg($("#box")[0], { scale: imgScale, height: scrollHeight, width: scrollWidth })
+        $(".overlay").removeClass("disNoneD");
+        //隐藏替换发言人按钮
+        $(".ugbhgjh").addClass("disNoneD");
+        //追加图片水印
+        if(kqOptions.water.content!="")
+            $("#box").css("position","relative")
+            $("#box").append(`<div class=" waterMarkDiv">
+                <img src="images/w1.png" alt="" srcset="">
+                <div style="color:${kqOptions.water.color};">@${kqOptions.water.content}</div>
+              </div>`);
+        domtoimage.toPng($("#box")[0], { scale: imgScale, height: scrollHeight, width: scrollWidth })
             .then(function (dataUrl) {
-                var link = document.createElement('a');
-                link.download = 'gugutalk.png';
-                link.href = dataUrl;
-                link.click();
+                encryption(dataUrl, scrollWidth * imgScale, scrollHeight * imgScale, n)
                 $(".iptChoose").removeClass("chooseNone");
                 $(".iptChooseYHZ").removeClass("chooseNone");
                 $(".zt_cz").removeClass("disNoneD")
                 $("#app").removeClass("opacity05");
                 $(".donut").addClass("disNoneD");
-                $(".overlay").toggleClass("disNoneD");
-                loadBoxData();
-                ToBtm();
+                $(".overlay").addClass("disNoneD");
+                $("#box").css("width", "auto")
+                // loadBoxData();
+                // ToBtm();
             });
     })
+
+
     /**
      * 检测是否已展开存档列表，展开则刷新
      */
@@ -1605,15 +1997,26 @@ $().ready(function () {
     })
     //点击读取存档
     $("#knopiji").on('click', '.dxx', function (e) {
-        var id = $(this).find(".AL-imgTools").data("id");
-        var cid = $(this).find(".AL-imgTools").data("cid");
-        var title = $(this).find(".word-wrap").html();
-        //console.log(id,cid,title);
-        if (confirm("是否读取" + title)) {
-            updateArchive(id, cid).then(res => {
-                loadBoxData();
-            })
+        try {
+            var id = $(this).find(".AL-imgTools").data("id");
+            var cid = $(this).find(".AL-imgTools").data("cid");
+            var title = $(this).find(".word-wrap").html();
+            //console.log(id,cid,title);
+            if (confirm("是否读取" + title)) {
+                updateArchive(id, cid);
+                //页面等待动画
+                jiazai();
+                //稍微等几秒
+                setTimeout(function () {
+                    jazaiwancheng();
+                    loadBoxData();
+                    alert("读取完成");
+                }, 1500);
+            }
+        } catch (error) {
+            alert("读取失败");
         }
+
 
         e.stopPropagation();
     })
@@ -1708,8 +2111,6 @@ $().ready(function () {
      */
     function LoadArchive(obj, type) {
         getBoxArray().then(res => {
-            console.log(res, "长度");
-
             obj.html("");
             var html = "";
             switch (type) {
@@ -1900,10 +2301,13 @@ $().ready(function () {
     function newRoleSave(ele) {
         ele.belongsImgURL = 'images/gb.png';
         roleArray.unshift(ele);
-        console.log(roleArray, ele);
-        createNewRoleArray(ele).then(res => {
+        jiazai();
+        createNewRoleArray(ele);
+        setTimeout(function () {
+            jazaiwancheng();
             Init();
-        });
+            //window.location.reload();
+        }, 500)
 
         //window.location.reload();
     }
@@ -1911,19 +2315,29 @@ $().ready(function () {
     function deleteRole(id, e) {
         var c = confirm("确认要删除吗？");
         if (c) {
+            jiazai();
             deleteNewRoleById(id);
-            window.location.reload();
+            setTimeout(function () {
+                jazaiwancheng();
+                Init();
+            }, 500)
+
+
         }
 
         e.stopPropagation();
     }
-    //下一个表情包
-    $(".ToT").click(function () {
-        ExpressionInit(1);
-    })
     //上一个表情包
-    $(".ToB").click(function () {
-        ExpressionInit(2);
+    $(".ToT").click(function (e) {
+        expressionCount = expressionCount == 1 ? 3 : --expressionCount;
+        ExpressionInit();
+        e.stopPropagation();
+    })
+    //下一个表情包
+    $(".ToB").click(function (e) {
+        expressionCount = expressionCount == 3 ? 1 : ++expressionCount;
+        ExpressionInit();
+        e.stopPropagation();
     })
     //打开表情包
     $("#imgExpression").click(function () {
@@ -1931,9 +2345,9 @@ $().ready(function () {
     })
     //打开/关闭设置列表
     $("#updateSet").click(function () {
-        $('.Gallery').toggleClass('n');
+        $('.Gallery').toggleClass('disNoneD');
     })
-    $('.gb').click(function () {
+    $('.gb').click(function (e) {
         closeExpression();
     })
     //关闭表情包
@@ -2076,9 +2490,10 @@ $().ready(function () {
         change();
 
     };
+
     function boxJson(json) {
         boxJsonArray.push(json);
-        addTalk(boxJsonArray, json);
+        addTalk(boxJsonArray);
     }
     //修改转账状态
     $("#box").on("click", ".zt_cz>div", function () {
@@ -2162,6 +2577,32 @@ $().ready(function () {
 
         ShowOrHidden($(this), e);
     })
+    //替换发言人头像
+    $("#box").on("click", ".ugbhgjh", function (e) {
+        e.stopPropagation();
+        if (chooseAvatar.roleId == 9999) return;
+        var t = $(this).parents().filter(".gu");
+        var type = t.data("type");
+        var json = getRoleJson(type);
+        var name = t.data("name");
+        if (name != undefined) {
+            t.attr("data-name", json.mark)
+        }
+        t.attr("data-names", json.name)
+        t.find(".roleImg").prop("src", json.path)
+        t.find(".roleNameSpan").html(json.name)
+
+        for (let i = 0; i < boxJsonArray.length; i++) {
+            if (t.data("index") == boxJsonArray[i].index) {
+                var b = boxJsonArray[i].content;
+                boxJsonArray[i] = json;
+                boxJsonArray[i].content = b;
+                break;
+            }
+        }
+        insertTalk(boxJsonArray);
+
+    })
     //抽出头像显示隐藏方法
     //点击头像
     function ShowOrHidden(obj, e) {
@@ -2170,37 +2611,30 @@ $().ready(function () {
         var tN = obj.parents().filter(".dc").prev().find(".gu").data("name");
         var bNs = obj.parents().filter(".gu").data("names");
         var bN = obj.parents().filter(".gu").data("name");
-        var index = obj.parents().filter(".gu").data("index")
-        console.log("上一个names:", tNs, "上一个name:", tN);
-        console.log("这一个names:", bNs, "这一个name:", bN);
-        if (tNs == bNs && bN == tN) {
+        var isT = obj.parents().filter(".dc").prev().find(".gu").data("isyhz");
+        var isB = obj.parents().filter(".gu").data("isyhz");
+        // console.log("上一个names:", tNs, "上一个name:", tN);
+        // console.log("这一个names:", bNs, "这一个name:", bN);
+        if (tNs == bNs && bN == tN && isT == isB) {
             if (obj.find("img").is(".width0")) {
                 obj.find('.xvb').removeClass("replaceAvatar");
                 obj.find('.roleImg').removeClass("width0");
                 obj.next().find(".roleNameSpan").removeClass("width0");
                 obj.parents().filter(".gu").toggleClass("roleOverallTopMargin");
                 obj.next().find(".qp").removeClass("qpW");
-                // if(obj.parents().is(".rightRoleOverall")){
-
-                // }else{
-                //     obj.next().find(".qp").removeClass("width0");
-                // }
+                obj.find(".ugbhgjh").removeClass("disNoneD");
             } else {
                 obj.find('.roleImg').addClass("width0");
                 obj.find(".xvb").addClass("replaceAvatar");
                 obj.next().find(".roleNameSpan").addClass("width0");
-                //obj.next().find(".qp").addClass("width0");
                 obj.parents().filter(".gu").toggleClass("roleOverallTopMargin");
                 obj.next().find(".qp").addClass("qpW");
-                // if(obj.parents().is(".rightRoleOverall")){
-
-                // }else{
-                //     obj.next().find(".qp").addClass("width0");
-                // }
+                obj.find(".ugbhgjh").addClass("disNoneD");
             }
 
         }
     }
+
     //点击开启移出备选头像队列
     $("#js").click(function () {
         $(this).toggleClass("border2sy");
@@ -2230,14 +2664,15 @@ $().ready(function () {
 
     //选中对话触发横线
     $("#box").on('click', '.ipt', function (e) {
-        var list = $(":checked[type='checkbox']")
+        var list = $(":checked[class*='ipt']")
         for (let index = 0; index < $(".ipt").length; index++) {
             if ($(list[index]).is(":checked")) {
-                $(list[index]).parents(".dc").addClass("editOpen").siblings().removeClass("editOpen");
+                $(list[index]).parents().filter(".dc").addClass("editOpen").siblings().removeClass("editOpen");
                 break;
             }
         }
-        if ($(this).is(":checked") != true && $(":checked[type='checkbox']").length < 1) {
+        console.log($(":checked[class='ipt']").length)
+        if ($(this).is(":checked") != true && $(":checked[class*='ipt']").length < 1) {
             $(".dc").removeClass("editOpen");
         }
     })
@@ -2254,29 +2689,18 @@ $().ready(function () {
             //     offset: '6px'
             // });
             if (this.checked) {
-                $(".YHZTX").removeClass("width0");
-                chooseAvatar = {
-                    roleId: 1,
-                    imgId: 3,
-                    path: " images/roleImages/mxr_sf.png",
-                    mark: "mxr_sf",
-                    name: "米雪儿"
-                }
+                $(".YHZTXdiv").removeClass("disNoneD");
             } else {
-                $(".YHZTX").addClass("width0");
-                chooseAvatar = {
-                    roleId: 9999,
-                    // imgId: 3,
-                    // path: " images/roleImages/mxr_sf.png",
-                    // mark: "mxr_sf",
-                    // name: "米雪儿"
-                }
+                $(".YHZTXdiv").addClass("disNoneD");
             }
-            kqOptions.isYHZ = this.checked;
-            setOption(kqOptions);
+            isR = this.checked;
         });
     });
     //#endregion
+
+
+
+
 
     //#region 小屏幕时触发事件
     //点击显示/关闭左侧工具栏

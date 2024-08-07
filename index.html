@@ -3,6 +3,8 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Cache-Control" content="max-age=1800">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
   <title>GuGuTalk</title>
   <link rel="stylesheet" href="layui/css/layui.css">
@@ -18,7 +20,9 @@
   <script src="js/dom-to-image.js"></script>
   <script src="js/indexDb.js"></script>
   <script src="js/indexDbTools.js"></script>
+  <script src="js/FileSaver.js"></script>
   <script src="js/index.js"></script>
+  <script src="js/archiveTool.js"></script>
   <!-- 滚动条样式 -->
   <style scoped lang="scss">
     ::-webkit-scrollbar {
@@ -53,20 +57,23 @@
       <div style="display: flex;">
         <img src="/images/menu.webp" alt="" srcset="" class="topimg">
         <span class="htmlName">GuGuTalk</span>
+        <img src="images/w1.png" class="disNoneD" alt="" srcset="">
         <div class="whDiv whDiv1 layui-icon layui-icon-tips-fill">
         </div>
       </div>
       <!-- <div class="stringLength">0KB</div>
       <span class="notice"></span> -->
       <!-- 右侧引航者发言,未完成 -->
-      <!-- <div class="yhzRightTXTool">
+      <div class="yhzRightTXTool">
         <div class="dfusf">
-          <img src="images/Expression/10001.png" alt="" class="YHZTX width0" srcset="">
+          <div class="YHZTXdiv disNoneD">
+            <img src="images/Expression/10001.png" alt="" class="YHZTX " srcset="">
+          </div>
           <div class="layui-form">
             <input type="checkbox" id="isYHZ" name="isYHZ" title="ON|OFF" lay-filter="isYHZ" lay-skin="switch">
           </div>
         </div>
-      </div> -->
+      </div>
 
     </div>
     <div class="overall">
@@ -127,7 +134,7 @@
             </a>
             <div>网页全屏</div>
           </div>
-          <div class="abc">
+          <!-- <div class="abc">
             <a href="javascript:;" id="drcd">
               <div>入</div>
             </a>
@@ -138,7 +145,7 @@
               <div>出</div>
             </a>
             <div>导出存档</div>
-          </div>
+          </div> -->
           <div class="abc">
             <a href="javascript:;" id="setList">
               <div>设</div>
@@ -164,13 +171,34 @@
           <div class="width00 center " id="knopiji">
             <!-- <div class="setList">
               <div>字体大小<input type="text" id="guFont-size" value="1.2" placeholder="数字，默认1.2">rem</div>
-              <div>背景颜色<input type="text" name="" id="guBackColor" value="207,207,206" placeholder="例如：white、#ffffff、rgb(0,0,0)"></div>
+              <div>背景颜色<input type="text" name="" id="guBackColor" value="rgb(255,247,225)"
+                  placeholder="white、#ffffff、rgb(0,0,0)">
+                <div style="display:inline;" class="whDiv whDiv2 layui-icon layui-icon-tips-fill"></div>
+              </div>
               <div>旁白字体大小<input type="text" name="" id="guAsideFont-size" value="1.1" placeholder="数字，默认1.1">rem</div>
-              <div>下载图片清晰度<input type="text" name="" id="loadImg-scale" value="1" placeholder="1-4，不要乱填！"></div>
+              <div>下载图片清晰度等级<input type="text" name="" id="loadImg-scale" value="4" placeholder="1-4，不要乱填！"></div>
+              <div>上传图片清晰度<input type="text" name="" id="uploadImg-scale" value="0.2" placeholder="0-1">
+                <div style="display:inline;" class="whDiv whDiv3 layui-icon layui-icon-tips-fill"></div>
+              </div>
               <div><button type="button" id="setSave">保存</button></div>
               <div><button type="button" id="setRe">重置</button></div>
+              <div><button type="button" id="reBmAvatar">重置底部备选头像列表</button></div>
+              <h3>存档相关</h3>
+              <div class="uuujkih">
+                <div>
+                  <div><button type="button" id="dccd">导出编辑内容</button></div>
+                  <div><button type="button" id="drcd">导入编辑内容</button></div>
+                </div>
+                <div>
+                  <div><button type="button" id="dccds">导出存档列表</button></div>
+                  <div><button type="button" id="drcds">导入存档列表</button></div>
+                </div>
+              </div>
+
             </div> -->
-            <!-- <div><button type="button" id="reBmAvatar">重置底部备选头像列表</button></div> -->
+            <!-- <h3>导入gugutalk读取内容</h3><span>测试功能！</span>
+            <div><button type="button" id="drgugu">导入guguTalk</button></div> -->
+
           </div>
           <div class="right width100">
             <div class="topBox">
@@ -193,9 +221,36 @@
             <div id="he" style="display: flex;flex-direction: column; height: 86%; width: 100%;overflow-y: auto;">
               <!-- 聊天区域 -->
               <div id="can" style="width: 100%;height: 100%;">
+                <div class="yufuyg disNoneD">
+                  <div class="yufuyguhui">
+                    <div><img src="images/picture.png" alt="" srcset="">发送图片</div>
+                    <div><img src="images/expression.png" alt="" srcset="">表情图片</div>
+                    <div><img src="images/send.png" alt="" srcset="">发送消息</div>
+                  </div>
+                  <div class="yufuyguhui">
+                    <div><img src="images/Reply.png" alt="" srcset="">回复</div>
+                    <div><img src="images/zz.png" alt="" srcset="">卡丘转账</div>
+                    <div><img src="images/info.png" alt="" srcset="">旁白</div>
+                  </div>
+                  <div class="yufuyguhui">
+                    <div><img src="images/love.png" alt="" srcset="">羁绊事件</div>
+                    <div><img src="images/Archive.png" alt="" srcset="">存档</div>
+                    <div><img src="images/save.png" alt="" srcset="">下载图片</div>
+                  </div>
+                  <div class="yufuyguhui">
+                    <div>右上角的开关是切换角色右侧发言</div>
+                  </div>
+                  <div class="opuuji  ">
+                    <div>ctrl+；和ctrl+’移动底部选中头像</div>
+                  </div>
+                  <div class="opuuji ">
+                    <div>；和‘是L键右边两个</div>
+                  </div>
+                  <div class="opuuji ">
+                    <div>ctrl+alt切换引航者/超弦体发言</div>
+                  </div>
+                </div>
                 <div id="box" ref="picture">
-
-                 
 
 
                 </div>
@@ -225,14 +280,13 @@
                 <img src="images/zz.png" title="转账" alt="转账" srcset="" class="propIco">
                 <img src="images/info.png" title="旁白" alt="旁白" srcset="" class="propIco">
                 <img src="images/love.png" title="羁绊事件" alt="羁绊事件" srcset="" class="propIco">
-
                 <img src="images/Archive.png" title="存档" alt="存档" srcset="" id="ArchiveSave" class="propIco">
                 <img src="images/save.png" title="保存" alt="保存" srcset="" id="save" class="save propIco">
               </div>
             </div>
           </div>
         </div>
-        <div class="GmainBtm">
+        <div class="GmainBtm no_copy">
           <div class="bottom1">
             <div class="bxhjc " id="js" style="margin-left: 5px;">
               <img src="/images/js.png" alt="" srcset="" class="bxhjcImg">

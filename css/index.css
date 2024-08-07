@@ -3,6 +3,17 @@
     margin: 0;
 }
 
+/*禁止复制*/
+.no_copy {
+    moz-user-select: -moz-none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 [contenteditable] {
     outline: 0 solid transparent;
 }
@@ -141,7 +152,7 @@ a:link {
     overflow: auto;
     width: 50%;
     overscroll-behavior: contain;
-    resize:horizontal;
+    resize: horizontal;
     /* flex-grow: 1; */
 }
 
@@ -171,6 +182,7 @@ a:link {
     /* overflow-y: auto; */
     /* overflow-x: hidden; */
     flex-grow: 1;
+    position: relative;
 }
 
 .bottom1 {
@@ -290,6 +302,7 @@ input.el-input__inner {
     display: flex;
     margin: 0 1rem;
     /* width: 100%; */
+
 }
 
 .roleOverallTopMargin {
@@ -308,6 +321,17 @@ input.el-input__inner {
 
 .divImg {
     padding-right: 0;
+    position: relative;
+}
+
+.ugbhgjh {
+    position: absolute;
+    top: 40px;
+    left: -5px;
+    border-radius: 50%;
+    background-color: white;
+    width: 25px;
+    height: 25px;
 }
 
 .roleImg {
@@ -436,7 +460,8 @@ input.el-input__inner {
 .rightImgExpression {
     border-radius: 0.25rem;
     /* max-width: 90%; */
-    margin-right: 1rem;
+    margin-right: 1.13rem;
+    margin-left: 0.5rem;
     width: 10rem;
 }
 
@@ -510,7 +535,7 @@ input.el-input__inner {
 .pangbaiDiv {
     display: flex;
     flex-direction: row;
-    margin: 1rem 2rem;
+    margin: 0rem 2rem;
     /* padding: 20px; */
     /* width: 610px; */
     width: 100%;
@@ -574,6 +599,7 @@ input.el-input__inner {
     height: 100%;
     /* flex-wrap: wrap; */
     width: 100%;
+    z-index: 1;
 }
 
 .sonbsc {
@@ -590,7 +616,7 @@ input.el-input__inner {
 }
 
 .bimgcs {
-
+    position: relative;
     margin: 0 0.25rem;
 
     height: auto;
@@ -639,27 +665,33 @@ input.el-input__inner {
 
     align-items: center;
 }
-.ytutug{
+
+.ytutug {
     height: 20%;
     display: flex;
-    
+
 }
-.dufgdusybvcis{
+
+.dufgdusybvcis {
     display: flex;
     flex-direction: column;
     position: absolute;
-    top: 110px;
+    top: 60px;
 }
-.dufgdusybvcis>button{
+
+.dufgdusybvcis>button {
     margin-bottom: 0.5rem;
 }
+
 .ddddddddddd {
     height: 100%;
     /* display: flex; */
 }
-#qh{
+
+#qh {
     display: none;
 }
+
 .bxhjc {
     margin: 4px;
     width: 32px;
@@ -727,18 +759,50 @@ input.el-input__inner {
     /*高度的一半*/
 }
 
-
-/* .Gallery {
+.yufuyg {
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    height: 30rem;
-    width: 30rem;
-    border-radius: 0.9rem;
-    background-color: rgb(255, 255, 255);
-    margin-left: -15rem;
-    margin-top: -15rem;
-} */
+    bottom: calc(25%);
+    left: calc(25%);
+}
+
+.yufuyg img {
+    width: 20px;
+    display: flex;
+
+
+}
+
+.yufuyguhui {
+    display: flex;
+    margin-top: 5px;
+}
+
+.yufuyg>div>div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 5px;
+}
+
+.uuujkih {
+    display: flex;
+    flex-direction: column;
+}
+
+.uuujkih>div {
+    display: flex;
+    flex-direction: row;
+}
+
+.uuujkih>div>div {
+    margin-top: 1rem;
+    margin-right: 1rem;
+}
+
 
 /* 存档 */
 .archiveList {
@@ -809,13 +873,21 @@ input.el-input__inner {
     cursor: pointer;
     border-bottom: 1px solid rgb(218, 225, 229);
 }
-.setList{
 
-}
-.setList>div{
-    margin-top: 1rem;
+.setList {
     margin-left: 1rem;
 }
+
+.setList>h2 {
+    margin-top: 1rem;
+    /* margin-left: 1rem; */
+}
+
+.setList>div {
+    margin-top: 1rem;
+    /* margin-left: 1rem; */
+}
+
 .newArchive:active {
     background-color: rgb(202, 215, 221);
 }
@@ -1066,7 +1138,7 @@ input.el-input__inner {
 
     width: auto;
 
-    margin: 0 1rem;
+    margin: 1rem;
 
     /* justify-content: space-between; */
 }
@@ -1081,7 +1153,7 @@ input.el-input__inner {
     /* padding-bottom: 0; */
     background-color: rgb(252, 238, 240);
     border: 1px solid rgb(221, 210, 216);
-    margin: 1rem 2rem;
+    margin: 0rem 2rem;
     background-image: url(/images/Favor_Schedule_Deco.webp);
     background-repeat: no-repeat;
     background-position: right center;
@@ -1092,7 +1164,7 @@ input.el-input__inner {
     display: flex;
     flex-direction: column;
     width: 100%;
-    margin: 1rem 2rem;
+    margin: 0rem 2rem;
     color: #4C5B6F;
     border-radius: 0.5rem;
     padding: 0.5rem;
@@ -1180,6 +1252,25 @@ input.el-input__inner {
 
 #box>div:nth-of-type(1) {
     margin-top: 2rem;
+}
+
+#box>.dc:last-child {
+    margin-bottom: 2rem;
+}
+
+.waterMarkDiv {
+    position: absolute;
+    right: 10px;
+    text-shadow: 1px 1px rgb(211, 226, 240);
+    display: flex;
+    align-items: center;
+}
+
+.waterMarkDiv>img {
+
+    height: 20px;
+
+    opacity: 0.3;
 }
 
 .bah {
@@ -1332,17 +1423,23 @@ input.el-input__inner {
     justify-content: flex-end;
 }
 
-.YHZTX {}
+.YHZTX {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
 
 .yhzColor {
     background-color: #E9FEFF;
 }
 
-.dfusf>img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
+.YHZTXdiv {
+    display: flex;
+    align-items: center;
+    position: relative;
 }
+
+
 
 .yhzRightTXTool {
 
@@ -1385,7 +1482,8 @@ input.el-input__inner {
     height: 0;
     margin-top: 0.5rem;
 }
-.ColorOrangeHornR{
+
+.ColorOrangeHornR {
     border-top: 0.3rem solid transparent;
     border-left: 0.5rem solid rgb(250, 156, 62);
     border-bottom: 0.3rem solid transparent;
@@ -1394,6 +1492,7 @@ input.el-input__inner {
     margin-top: 0.5rem;
     margin-right: 0.65rem;
 }
+
 .zt_font {
     margin-left: 0.5rem;
     color: white;
@@ -1441,11 +1540,20 @@ input.el-input__inner {
     line-height: 1rem;
     margin-left: auto;
 }
-.zt_cz>div{
+
+.zt_cz>div {
     cursor: pointer;
 }
 
-.MarLeftAuto{/* margin-left: auto; */}
+.MarLeftAuto {
+    /* margin-left: auto; */
+}
+
+.rightRoleOverallr {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
 /* 超小屏幕（手机，小于 768px） */
 @media (max-width: 768px) {
     .width100 {
@@ -1538,12 +1646,10 @@ input.el-input__inner {
         margin-top: 0.5rem;
     }
 
-    .rightRoleOverallr {
-        margin-top: 0;
-    }
+
 
     .replyDiv {
-        margin: 0 0.5rem;
+        margin: 1rem 0.5rem;
     }
 
     .left>.content {}

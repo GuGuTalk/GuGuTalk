@@ -2,40 +2,31 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="js/code.jquery.com_jquery-3.7.1.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="js/code.jquery.com_jquery-3.7.1.js"></script>
 </head>
 <style>
-    .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: transparent;
-    }
-    .unclickable {
-      position: relative;
-    }
-  </style>
-  <body>
-    <div class="unclickable">
-      <button>可点击按钮</button>
-      <div class="overlay"></div>
-    </div>
-  </body>
+  canvas {
+    border: 1px solid black;
+  }
+</style>
+
+<body>
+  <img src="" alt="" srcset="">
+  <div>
+    <div class="n"></div>
+  </div>
+</body>
 <script>
-    $().ready(function () {
-        $("#test").change(function () {
-            var imgP = $(this);
-            var imgObj = imgP[0].files[0];
-            console.log(imgP);
-            console.log(imgObj);
-        })
-        
-    })
+  $().ready(function () {
+    
+
+   
+    console.log($(".n").prev(),1)
+    ;
+  })
 </script>
 
 </html>
