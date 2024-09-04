@@ -2,11 +2,17 @@
     display: none;
 
 }
-
+.PoRe{
+    position: relative;
+}
 .padNone {
     padding: 0;
 }
 
+.fontTip{
+    min-width: 6rem;
+    background-color: rgb(230, 230, 230);
+}
 .opacity05 {
     opacity: 0.5;
 }

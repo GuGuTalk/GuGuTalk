@@ -199,6 +199,13 @@ async function createRoleArrayCopy(rolearray) {
         await addData(db, gugutalk, array, roleArrayCopy);
     }
     else {
+        for (let index = 0; index < exist.length; index++) {
+            if(exist[index].roleName=="珐格兰斯"){
+                await deleteDB(db, gugutalk, roleArrayCopy);
+                closeDB(db);
+                window.location.reload();
+            }
+        }
         if (newrolearray != undefined) {
             for (let index = newrolearray.length - 1; index >= 0; index--) {
                 rolearray.unshift(newrolearray[index])

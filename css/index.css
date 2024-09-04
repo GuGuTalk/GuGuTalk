@@ -302,7 +302,7 @@ input.el-input__inner {
     display: flex;
     margin: 0 1rem;
     /* width: 100%; */
-
+    /* height: auto; */
 }
 
 .roleOverallTopMargin {
@@ -434,12 +434,24 @@ input.el-input__inner {
 .roleRemarkDivSpan {
     color: white;
     white-space: pre-wrap;
-    overflow-wrap: break-word;
-    word-break: break-all;
     font-size: 1.2rem;
     font-family: none;
     /* font-weight: bold; */
     /* display: inline-block; */
+    /* 这两个在技术上是一样的, 为了兼容了浏览器两个都加上 */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
+    /* 这个的使用在web-kit中有些危险，他可能会阶段所有东西 */
+    word-break: break-all;
+    /* Instead use this non-standard one: */
+    word-break: break-word;
+
+    /* 如果浏览器支持的话增加一个连接符(Blink不支持) */
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
 }
 
 #box {
@@ -455,6 +467,14 @@ input.el-input__inner {
     padding: 0.25rem;
     border-radius: 0.25rem;
     /* max-width: 80%; */
+    /* height: 100%; */
+    /* max-height: 50%; */
+    /* width: 100%; */
+    /* width: 50%; */
+    /* object-fit: fill; */
+    /* width: 300px; */
+    /* height: 300px; */
+    /* overflow: auto; */
 }
 
 .rightImgExpression {
@@ -475,12 +495,14 @@ input.el-input__inner {
 
 .rightImg1 {
     background-color: rgb(74, 138, 202);
-    max-width: 85%;
+    max-width: 78%;
+    /* max-height: 85%; */
 }
 
 .rightImg2 {
     background-color: rgb(76, 91, 111);
     max-width: 90%;
+    /* display: flex; */
 }
 
 .centerRoleArraybtn {
@@ -1251,7 +1273,7 @@ input.el-input__inner {
 }
 
 #box>div:nth-of-type(1) {
-    margin-top: 2rem;
+    margin-top: 2rem !important;
 }
 
 #box>.dc:last-child {
@@ -1638,7 +1660,7 @@ input.el-input__inner {
     }
 
     .roleOverallTopMargin {
-        margin-top: 1rem;
+        margin-top: 1rem !important;
         /* display: flex; */
     }
 

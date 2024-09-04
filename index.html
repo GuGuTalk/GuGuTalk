@@ -1,140 +1,148 @@
 <!DOCTYPE html>
 <html class="backImg">
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Cache-Control" content="max-age=1800">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <title>GuGuTalk</title>
-  <link rel="stylesheet" href="layui/css/layui.css">
-  <link rel="stylesheet" href="css/index.css">
-  <link rel="stylesheet" href="css/tool.css">
-  <link rel="stylesheet" href="css/font.css">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="max-age=1800">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<title>GuGuTalk</title>
+		<link rel="stylesheet" href="layui/css/layui.css">
+		<link rel="stylesheet" href="css/index.css">
+		<link rel="stylesheet" href="css/tool.css">
+		<link rel="stylesheet" href="css/font.css">
 
-  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
-  <!-- 引入样式 -->
-  <script src="js/code.jquery.com_jquery-3.7.1.js"></script>
-  <script src="layui/layui.js"></script>
-  <!-- <script src="js/html2canvas.js"></script> -->
-  <script src="js/dom-to-image.js"></script>
-  <script src="js/indexDb.js"></script>
-  <script src="js/indexDbTools.js"></script>
-  <script src="js/FileSaver.js"></script>
-  <script src="js/index.js"></script>
-  <script src="js/archiveTool.js"></script>
-  <!-- 滚动条样式 -->
-  <style scoped lang="scss">
-    ::-webkit-scrollbar {
-      width: 0.35rem;
-      height: 0.35rem;
-      overscroll-behavior: contain;
-    }
+		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+		<!-- 引入样式 -->
+		<script src="js/code.jquery.com_jquery-3.7.1.js"></script>
+		<script src="layui/layui.js"></script>
+		<!-- <script src="js/html2canvas.js"></script> -->
+		<script src="js/dom-to-image.js"></script>
+		<script src="js/indexDb.js"></script>
+		<script src="js/indexDbTools.js"></script>
+		<script src="js/FileSaver.js"></script>
+		<script src="js/index.js"></script>
+		<script src="js/archiveTool.js"></script>
+		<!-- 滚动条样式 -->
+		<style scoped lang="scss">
+			::-webkit-scrollbar {
+				width: 0.35rem;
+				height: 0.35rem;
+				overscroll-behavior: contain;
+			}
 
-    ::-webkit-scrollbar-track {
-      background-color: #f3f3f3;
-    }
+			::-webkit-scrollbar-track {
+				background-color: #f3f3f3;
+			}
 
-    ::-webkit-scrollbar-thumb {
-      background-color: #aaa;
-    }
+			::-webkit-scrollbar-thumb {
+				background-color: #aaa;
+			}
 
-    ::-webkit-scrollbar-thumb:hover {
-      background-color: #aaa;
-    }
+			::-webkit-scrollbar-thumb:hover {
+				background-color: #aaa;
+			}
 
-    ::-webkit-scrollbar-thumb:active {
-      background-color: #aaa;
-    }
-  </style>
+			::-webkit-scrollbar-thumb:active {
+				background-color: #aaa;
+			}
+		</style>
 
-</head>
+	</head>
 
-<body class="bodyN opacity05">
-  <div class="overlay "></div>
-  <div id="app">
-    <div class="top">
-      <div style="display: flex;">
-        <img src="/images/menu.webp" alt="" srcset="" class="topimg">
-        <span class="htmlName">GuGuTalk</span>
-        <img src="images/w1.png" class="disNoneD" alt="" srcset="">
-        <div class="whDiv whDiv1 layui-icon layui-icon-tips-fill">
-        </div>
-      </div>
-      <!-- <div class="stringLength">0KB</div>
+	<body class="bodyN opacity05">
+		<div class="overlay "></div>
+		<div id="app">
+			<div class="top">
+				<div style="display: flex;">
+					<img src="/images/menu.webp" alt="" srcset="" class="topimg">
+					<span class="htmlName">GuGuTalk</span>
+					<img src="images/w1.png" class="disNoneD" alt="" srcset="">
+					<div class="whDiv whDiv1 layui-icon layui-icon-tips-fill">
+					</div>
+				</div>
+				<!-- <div class="stringLength">0KB</div>
       <span class="notice"></span> -->
-      <!-- 右侧引航者发言,未完成 -->
-      <div class="yhzRightTXTool">
-        <div class="dfusf">
-          <div class="YHZTXdiv disNoneD">
-            <img src="images/Expression/10001.png" alt="" class="YHZTX " srcset="">
-          </div>
-          <div class="layui-form">
-            <input type="checkbox" id="isYHZ" name="isYHZ" title="ON|OFF" lay-filter="isYHZ" lay-skin="switch">
-          </div>
-        </div>
-      </div>
+				<div class="yhzRightTXTool">
+					<div class="dfusf">
+						<div class="YHZTXdiv disNoneD">
+							<img src="images/Expression/10001.png" alt="" class="YHZTX " srcset="">
+						</div>
+						<div class="layui-form">
+							<input type="checkbox" id="isYHZ" name="isYHZ" title="ON|OFF" lay-filter="isYHZ"
+								lay-skin="switch">
+						</div>
+					</div>
+				</div>
 
-    </div>
-    <div class="overall">
-      <div class="left disNone">
-        <div class="content">
-          <div class="abc">
-            <a href="https://tieba.baidu.com/p/8740390290?pid=149108051096&cid=0#149108051096" target="_blank">
-              <div>更</div>
-            </a>
-            <div>更新&教程</div>
-          </div>
-          <div class="abc">
-            <a href="javascript:;" id="newRole">
-              <div>创</div>
-            </a>
-            <div>创建角色</div>
-          </div>
-          <div class="abc">
-            <a href="https://wiki.biligame.com/klbq/%E9%A6%96%E9%A1%B5" target="_blank">
-              <div>W</div>
-            </a>
-            <div>卡丘WiKi</div>
-          </div>
-          <div class="abc">
-            <a href="https://www.wjx.cn/vm/tKq8yxT.aspx#" target="_blank">
-              <div>问</div>
-            </a>
-            <div>问卷调查</div>
-          </div>
-          <div class="abc">
-            <a href="javascript:;" id="ReName">
-              <div>重</div>
-            </a>
-            <div>重置名称</div>
-          </div>
-          <div class="abc">
-            <a href="javascript:;" id="RoleList">
-              <div>角</div>
-            </a>
-            <div>角色列表</div>
-          </div>
-          <div class="abc">
-            <a href="javascript:;" id="ArchiveList">
-              <div>档</div>
-            </a>
-            <div>存档列表</div>
-          </div>
-          <div class="abc">
-            <a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=duFfP_uI03TI7FmkiPcuavi7MzbgXZJd&authKey=I4FxwUNIVgVRk8KNK1HEEe%2Faj%2FdDDhuyqPtrgpcLsLA9M6huKp0gBBMI0wxgdSNc&noverify=0&group_code=461688676"
-              id="joinQQ" target="_blank">
-              <div>Q</div>
-            </a>
-            <div>问题反馈</div>
-          </div>
-          <div class="abc">
-            <a href="javascript:;" id="ALLPM">
-              <div>全</div>
-            </a>
-            <div>网页全屏</div>
-          </div>
-          <!-- <div class="abc">
+			</div>
+			<div class="overall">
+				<div class="left disNone">
+					<div class="content">
+						<div class="abc">
+							<a href="pyq.html"
+								target="_blank">
+								<div>朋</div>
+							</a>
+							<div>朋友圈</div>
+						</div>
+						<div class="abc">
+							<a href="https://tieba.baidu.com/p/8740390290?pid=149108051096&cid=0#149108051096"
+								target="_blank">
+								<div>更</div>
+							</a>
+							<div>更新&教程</div>
+						</div>
+						<div class="abc">
+							<a href="javascript:;" id="newRole">
+								<div>创</div>
+							</a>
+							<div>创建角色</div>
+						</div>
+						<div class="abc">
+							<a href="https://wiki.biligame.com/klbq/%E9%A6%96%E9%A1%B5" target="_blank">
+								<div>W</div>
+							</a>
+							<div>卡丘WiKi</div>
+						</div>
+						<div class="abc">
+							<a href="https://www.wjx.cn/vm/tKq8yxT.aspx#" target="_blank">
+								<div>问</div>
+							</a>
+							<div>问卷调查</div>
+						</div>
+						<div class="abc">
+							<a href="javascript:;" id="ReName">
+								<div>重</div>
+							</a>
+							<div>重置名称</div>
+						</div>
+						<div class="abc">
+							<a href="javascript:;" id="RoleList">
+								<div>角</div>
+							</a>
+							<div>角色列表</div>
+						</div>
+						<div class="abc">
+							<a href="javascript:;" id="ArchiveList">
+								<div>档</div>
+							</a>
+							<div>存档列表</div>
+						</div>
+						<div class="abc">
+							<a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=duFfP_uI03TI7FmkiPcuavi7MzbgXZJd&authKey=I4FxwUNIVgVRk8KNK1HEEe%2Faj%2FdDDhuyqPtrgpcLsLA9M6huKp0gBBMI0wxgdSNc&noverify=0&group_code=461688676"
+								id="joinQQ" target="_blank">
+								<div>Q</div>
+							</a>
+							<div>问题反馈</div>
+						</div>
+						<div class="abc">
+							<a href="javascript:;" id="ALLPM">
+								<div>全</div>
+							</a>
+							<div>网页全屏</div>
+						</div>
+						<!-- <div class="abc">
             <a href="javascript:;" id="drcd">
               <div>入</div>
             </a>
@@ -146,30 +154,30 @@
             </a>
             <div>导出存档</div>
           </div> -->
-          <div class="abc">
-            <a href="javascript:;" id="setList">
-              <div>设</div>
-            </a>
-            <div>设置</div>
-          </div>
-          <!-- <div class="abc">
+						<div class="abc">
+							<a href="javascript:;" id="setList">
+								<div>设</div>
+							</a>
+							<div>设置</div>
+						</div>
+						<!-- <div class="abc">
             <a href="javascript:;" id="test">
               <div>测</div>
             </a>
             <div>测试</div>
           </div> -->
-          <!-- <div class="abc">
+						<!-- <div class="abc">
             <a href="javascript:;" id="importExpression">
               <div>导</div>
             </a>
             <div>导入表情</div>
           </div> -->
-        </div>
-      </div>
-      <div class="Gmain">
-        <div class="GmainTop">
-          <div class="width00 center " id="knopiji">
-            <!-- <div class="setList">
+					</div>
+				</div>
+				<div class="Gmain">
+					<div class="GmainTop">
+						<div class="width00 center " id="knopiji">
+							<!-- <div class="setList">
               <div>字体大小<input type="text" id="guFont-size" value="1.2" placeholder="数字，默认1.2">rem</div>
               <div>背景颜色<input type="text" name="" id="guBackColor" value="rgb(255,247,225)"
                   placeholder="white、#ffffff、rgb(0,0,0)">
@@ -196,151 +204,158 @@
               </div>
 
             </div> -->
-            <!-- <h3>导入gugutalk读取内容</h3><span>测试功能！</span>
+							<!-- <h3>导入gugutalk读取内容</h3><span>测试功能！</span>
             <div><button type="button" id="drgugu">导入guguTalk</button></div> -->
 
-          </div>
-          <div class="right width100">
-            <div class="topBox">
-              <div class="">
-                <button type="button" id="drop-down" class="topDelete">
-                  <span class="topDeleteSpan">......</span>
-                </button>
-                <div class="disNoneD dufgdusybvcis">
-                  <button type="button" id="selectAll" class="topDelete"><span class="topDeleteSpan">全选</span></button>
-                  <button type="button" id="reSelectAll" class="topDelete"><span
-                      class="topDeleteSpan">反选</span></button>
-                  <button type="button" id="intervalSelection" class="topDelete"><span
-                      class="topDeleteSpan">区间选</span></button>
-                </div>
-              </div>
+						</div>
+						<div class="right width100">
+							<div class="topBox">
+								<div class="">
+									<button type="button" id="drop-down" class="topDelete">
+										<span class="topDeleteSpan">......</span>
+									</button>
+									<div class="disNoneD dufgdusybvcis">
+										<button type="button" id="selectAll" class="topDelete"><span
+												class="topDeleteSpan">全选</span></button>
+										<button type="button" id="reSelectAll" class="topDelete"><span
+												class="topDeleteSpan">反选</span></button>
+										<button type="button" id="intervalSelection" class="topDelete"><span
+												class="topDeleteSpan">区间选</span></button>
+									</div>
+								</div>
 
-              <button type="button" id="delAll" class="topDelete"><span class="topDeleteSpan">删除</span></button>
-              <button type="button" id="delOne" class="topDelete"><span class="topDeleteSpan">删除上一句</span></button>
-            </div>
-            <div id="he" style="display: flex;flex-direction: column; height: 86%; width: 100%;overflow-y: auto;">
-              <!-- 聊天区域 -->
-              <div id="can" style="width: 100%;height: 100%;">
-                <div class="yufuyg disNoneD">
-                  <div class="yufuyguhui">
-                    <div><img src="images/picture.png" alt="" srcset="">发送图片</div>
-                    <div><img src="images/expression.png" alt="" srcset="">表情图片</div>
-                    <div><img src="images/send.png" alt="" srcset="">发送消息</div>
-                  </div>
-                  <div class="yufuyguhui">
-                    <div><img src="images/Reply.png" alt="" srcset="">回复</div>
-                    <div><img src="images/zz.png" alt="" srcset="">卡丘转账</div>
-                    <div><img src="images/info.png" alt="" srcset="">旁白</div>
-                  </div>
-                  <div class="yufuyguhui">
-                    <div><img src="images/love.png" alt="" srcset="">羁绊事件</div>
-                    <div><img src="images/Archive.png" alt="" srcset="">存档</div>
-                    <div><img src="images/save.png" alt="" srcset="">下载图片</div>
-                  </div>
-                  <div class="yufuyguhui">
-                    <div>右上角的开关是切换角色右侧发言</div>
-                  </div>
-                  <div class="opuuji  ">
-                    <div>ctrl+；和ctrl+’移动底部选中头像</div>
-                  </div>
-                  <div class="opuuji ">
-                    <div>；和‘是L键右边两个</div>
-                  </div>
-                  <div class="opuuji ">
-                    <div>ctrl+alt切换引航者/超弦体发言</div>
-                  </div>
-                </div>
-                <div id="box" ref="picture">
-
-
-                </div>
-              </div>
-            </div>
-            <div class="nopkmp">
-              <div class="nopkmpBottom">
-                <div class="bimg">
-                  <div class="bimgcs" id="imgUpload">
-                    <img src="images/picture.png" alt="图片" srcset="" class="oneImg">
-                  </div>
-                  <div class="bimgcs" id="imgExpression">
-                    <img src="images/expression.png" alt="图片" srcset="" class="oneImg">
-                  </div>
-                </div>
-
-                <div class="txtDiv">
-                  <textarea contenteditable="true" id="text" maxlength="150"></textarea>
-                </div>
-
-                <div>
-                  <button type="button" class="send"><img src="images/send.png" alt="发送" srcset=""></button>
-                </div>
-              </div>
-              <div class="propIcons">
-                <img src="images/Reply.png" title="回复" alt="回复" srcset="" class="propIco">
-                <img src="images/zz.png" title="转账" alt="转账" srcset="" class="propIco">
-                <img src="images/info.png" title="旁白" alt="旁白" srcset="" class="propIco">
-                <img src="images/love.png" title="羁绊事件" alt="羁绊事件" srcset="" class="propIco">
-                <img src="images/Archive.png" title="存档" alt="存档" srcset="" id="ArchiveSave" class="propIco">
-                <img src="images/save.png" title="保存" alt="保存" srcset="" id="save" class="save propIco">
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="GmainBtm no_copy">
-          <div class="bottom1">
-            <div class="bxhjc " id="js" style="margin-left: 5px;">
-              <img src="/images/js.png" alt="" srcset="" class="bxhjcImg">
-            </div>
-            <div class="bottomImgs">
-            </div>
-            <div class="bxhjc" id="qh">
-              <img src="/images/箭头左右.png" alt="" srcset="" class="bxhjcImg">
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
+								<button type="button" id="delAll" class="topDelete"><span
+										class="topDeleteSpan">删除</span></button>
+								<button type="button" id="delOne" class="topDelete"><span
+										class="topDeleteSpan">删除上一句</span></button>
+							</div>
+							<div id="he"
+								style="display: flex;flex-direction: column; height: 86%; width: 100%;overflow-y: auto;">
+								<!-- 聊天区域 -->
+								<div id="can" style="width: 100%;height: 100%;">
+									<div class="yufuyg disNoneD">
+										<div class="yufuyguhui">
+											<div><img src="images/picture.png" alt="" srcset="">发送图片</div>
+											<div><img src="images/expression.png" alt="" srcset="">表情图片</div>
+											<div><img src="images/send.png" alt="" srcset="">发送消息</div>
+										</div>
+										<div class="yufuyguhui">
+											<div><img src="images/Reply.png" alt="" srcset="">回复</div>
+											<div><img src="images/zz.png" alt="" srcset="">卡丘转账</div>
+											<div><img src="images/info.png" alt="" srcset="">旁白</div>
+										</div>
+										<div class="yufuyguhui">
+											<div><img src="images/love.png" alt="" srcset="">羁绊事件</div>
+											<div><img src="images/Archive.png" alt="" srcset="">存档</div>
+											<div><img src="images/save.png" alt="" srcset="">下载图片</div>
+										</div>
+										<div class="yufuyguhui">
+											<div>右上角的开关是切换角色右侧发言</div>
+										</div>
+										<div class="opuuji  ">
+											<div>ctrl+；和ctrl+’移动底部选中头像</div>
+										</div>
+										<div class="opuuji ">
+											<div>；和‘是L键右边两个</div>
+										</div>
+										<div class="opuuji ">
+											<div>ctrl+alt切换引航者/超弦体发言</div>
+										</div>
+									</div>
+									<div id="box" ref="picture">
 
 
+									</div>
+								</div>
+							</div>
+							<div class="nopkmp">
+								<div class="nopkmpBottom">
+									<div class="bimg">
+										<div class="bimgcs" id="imgUpload">
+											<img src="images/picture.png" alt="图片" srcset="" class="oneImg">
+										</div>
+										<div class="bimgcs" id="imgExpression">
+											<img src="images/expression.png" alt="图片" srcset="" class="oneImg">
+										</div>
+									</div>
 
-    <!-- 选择存档列表 -->
-    <div class="archiveList n">
-      <div class="archiveGalleryTop">
-        <div class="archiveTydgvsgfv">
-          <div class="archiveYhivdfbs">存档</div>
-          <img src="images/gb.png" alt="" srcset="" class="archiveGb">
-        </div>
+									<div class="txtDiv">
+										<textarea contenteditable="true" id="text" maxlength="150"></textarea>
+									</div>
 
-      </div>
-      <div class="archiveGalleryContent ">
-        <div class="newArchive">
-          <img src="/images/add.png" alt="" srcset="">
-          <div class="newArchiveLabel">创建新系列</div>
-        </div>
-        <div class="oldArchive">
-        </div>
-      </div>
-    </div>
-    <!-- 表情包 -->
-    <div class="Gallery n">
-      <div class="GalleryTop">
-        <div class="tydgvsgfv">
-          <div><a href="javascript:;"><img class="ToT" src="images/left.png" alt="" srcset=""></a></div>
-          <div class="yhivdfbs">卡丘丘的日常</div>
-          <div><a href="javascript:;"><img class="ToB" src="images/right.png" alt="" srcset=""></a></div>
-        </div>
-        <img src="images/gb.png" alt="" srcset="" class="gb">
-      </div>
-      <div class="GalleryContent">
-        <div class="imgContent">
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="donut "></div>
+									<div>
+										<button type="button" class="send"><img src="images/send.png" alt="发送"
+												srcset=""></button>
+									</div>
+								</div>
+								<div class="propIcons">
+									<img src="images/Reply.png" title="回复" alt="回复" srcset="" class="propIco">
+									<img src="images/zz.png" title="转账" alt="转账" srcset="" class="propIco">
+									<img src="images/info.png" title="旁白" alt="旁白" srcset="" class="propIco">
+									<img src="images/love.png" title="羁绊事件" alt="羁绊事件" srcset="" class="propIco">
+									<img src="images/Archive.png" title="存档" alt="存档" srcset="" id="ArchiveSave"
+										class="propIco">
+									<img src="images/save.png" title="保存" alt="保存" srcset="" id="save"
+										class="save propIco">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="GmainBtm no_copy">
+						<div class="bottom1">
+							<div class="bxhjc " id="js" style="margin-left: 5px;">
+								<img src="/images/js.png" alt="" srcset="" class="bxhjcImg">
+							</div>
+							<div class="bottomImgs">
+							</div>
+							<div class="bxhjc" id="qh">
+								<img src="/images/箭头左右.png" alt="" srcset="" class="bxhjcImg">
+							</div>
+						</div>
 
-</body>
+					</div>
+				</div>
+			</div>
+
+
+
+			<!-- 选择存档列表 -->
+			<div class="archiveList n">
+				<div class="archiveGalleryTop">
+					<div class="archiveTydgvsgfv">
+						<div class="archiveYhivdfbs">存档</div>
+						<img src="images/gb.png" alt="" srcset="" class="archiveGb">
+					</div>
+
+				</div>
+				<div class="archiveGalleryContent ">
+					<div class="newArchive">
+						<img src="/images/add.png" alt="" srcset="">
+						<div class="newArchiveLabel">创建新系列</div>
+					</div>
+					<div class="oldArchive">
+					</div>
+				</div>
+			</div>
+			<!-- 表情包 -->
+			<div class="Gallery n">
+				<div class="GalleryTop">
+					<div class="tydgvsgfv">
+						<div><a href="javascript:;"><img class="ToT" src="images/left.png" alt="" srcset=""></a></div>
+						<div class="yhivdfbs">卡丘丘的日常</div>
+						<div><a href="javascript:;"><img class="ToB" src="images/right.png" alt="" srcset=""></a></div>
+					</div>
+					<img src="images/gb.png" alt="" srcset="" class="gb">
+				</div>
+				<div class="GalleryContent">
+					<div class="imgContent">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="donut "></div>
+
+	</body>
 
 
 

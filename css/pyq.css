@@ -1,0 +1,2018 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+/*禁止复制*/
+.no_copy {
+    moz-user-select: -moz-none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+[contenteditable] {
+    outline: 0 solid transparent;
+}
+
+a,
+a:link {
+    text-decoration: none;
+    color: black;
+}
+
+#app {
+    width: 100%;
+    height: 100%;
+    overflow-y: hidden;
+}
+
+.height100 {
+    /* height: 100%; */
+}
+
+.htmlName,
+.notice {
+
+    margin-left: 1rem;
+
+    line-height: 2.5rem;
+
+    font-size: 2rem;
+
+    color: rgb(255, 255, 255);
+
+    font-family: emoji;
+}
+
+.stringLength {
+    color: green;
+}
+
+.backImg {
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url(/images/hexa_back_01.webp);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+}
+
+.width100 {
+    width: 100%;
+}
+
+.whDiv {
+
+    display: flex;
+
+    /* width: 50px; */
+
+    font-size: 25px;
+
+    color: rgb(76, 91, 111);
+
+    /* height: 50px; */
+
+    align-items: center;
+}
+
+.whDiv>div {
+
+    font-size: 1.5rem;
+}
+
+.bodyN {
+    height: 100%;
+    width: auto;
+    margin: 0 calc(10%);
+}
+
+.margin0 {
+    margin: 0;
+}
+
+.top {
+    background-color: rgb(139, 187, 233);
+    width: auto;
+    /* height: 6%; */
+    height: 3.5rem;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    display: flex;
+    flex-direction: row;
+    overflow-y: hidden;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.topimg {
+    width: 2rem;
+    margin-left: 1.3rem;
+    display: none;
+}
+
+.left {
+    background-color: rgb(76, 91, 111);
+    height: calc(100% - 3.5rem);
+    width: 5rem;
+    border-bottom-left-radius: 1rem;
+    /* flex-grow: 1; */
+}
+
+.left .content {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.left .content .xx img {
+    max-width: 100%;
+    height: auto;
+}
+
+.left .content .xx {
+    border-bottom: 1px black solid;
+    height: 40%;
+}
+
+.center {
+    background-color: rgb(243, 247, 248);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    width: 50%;
+    overscroll-behavior: contain;
+    resize: horizontal;
+    /* flex-grow: 1; */
+}
+
+.center .xq {
+    display: flex;
+    height: 5rem;
+    padding: 0.2rem 0;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    overflow-x: hidden;
+}
+
+.qx {
+    background-color: rgb(202, 215, 221);
+}
+
+.right {
+    /* background-color: rgb(207, 207, 206); */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    justify-content: space-between;
+    align-items: baseline;
+    /* overflow-y: auto; */
+    /* overflow-x: hidden; */
+    flex-grow: 1;
+    position: relative;
+}
+
+.bottom1 {
+    background-color: rgb(76, 91, 111);
+    height: 96%;
+    display: flex;
+    /* justify-content: flex-start; */
+    /* border-bottom-left-radius: 1rem; */
+    border-bottom-right-radius: 1rem;
+    flex-direction: row;
+    width: 100%;
+}
+
+.nopkmpBottom {
+    display: flex;
+    align-items: center;
+    background-color: rgb(222, 184, 135);
+    width: 100%;
+    /* justify-content: space-between; */
+}
+
+.bimg {
+    display: flex;
+    align-items: center;
+    /* height: 4px; */
+    flex-flow: 1;
+    /* opacity: 0.1; */
+}
+
+input.el-input__inner {
+    font-size: 1rem;
+}
+
+.send {
+    border: 0;
+    background-color: burlywood;
+    cursor: pointer;
+    display: flex;
+}
+
+.save {
+    border: 0;
+
+    cursor: pointer;
+}
+
+.propIcons {
+    display: flex;
+    flex-direction: row;
+    background-color: rgb(255, 228, 196);
+    padding: 0.2rem 0;
+    /* align-content: space-around; */
+    justify-content: space-around;
+}
+
+.propIco {
+    height: 1.8rem;
+    cursor: pointer;
+}
+
+.propIco:hover {
+    position: relative;
+    bottom: 0.1rem;
+}
+
+.bg {
+    display: inline-block;
+    width: 0px;
+    height: 0px;
+    border-top: 10px solid transparent;
+    border-right: 10px solid rgb(76, 91, 111);
+    border-bottom: 10px solid transparent;
+    position: relative;
+    top: -51px;
+    left: 83px;
+}
+
+.topBox {
+    padding: 0.25rem 0.5rem;
+    /* width: auto; */
+    /* margin-left: auto; */
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    /* height: auto; */
+    overflow-x: auto;
+    overflow-y: hidden;
+    justify-content: flex-end;
+}
+
+.topDelete {
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0.5rem;
+    width: auto;
+    height: 2.5rem;
+    line-height: 1.5rem;
+    border: none;
+    transform: skew(0deg);
+    cursor: pointer;
+    margin-right: 1rem;
+    background-color: white;
+    border: 0.2px solid rgb(230, 233, 235);
+    box-shadow: rgb(207, 212, 215) 0.05rem 0.1rem 0.2rem;
+    border-radius: 0.25rem;
+    flex-wrap: nowrap;
+}
+
+.topDeleteSpan {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: rgb(63, 68, 74);
+}
+
+.roleOverall {
+    display: flex;
+    margin: 0 1rem;
+    /* width: 100%; */
+
+}
+
+.roleOverallTopMargin {
+    margin-top: 1rem;
+}
+
+.rightRoleOverall {
+    margin-top: 0.5rem;
+    flex-direction: row-reverse;
+    /* margin-right: 0; */
+}
+
+
+.divImg {
+    padding-right: 0;
+    position: relative;
+}
+
+.ugbhgjh {
+    position: absolute;
+    top: 40px;
+    left: -5px;
+    border-radius: 50%;
+    background-color: white;
+    width: 25px;
+    height: 25px;
+}
+
+.roleImg {
+    width: 64px;
+    height: 64px;
+    border-radius: 2.5rem;
+}
+
+.roleNameSpan {
+    margin-left: 1.1rem;
+    font-family: bold;
+    font-weight: bold;
+    font-size: large;
+}
+
+.roleRemarkDiv {
+    display: flex;
+    padding: 0.5rem;
+}
+
+.roleRemarkDivs {
+    display: flex;
+    padding: 0.5rem 0rem 0 0.5rem;
+    /* width: 100%; */
+}
+
+.horn {
+    left: -0.5rem;
+    top: 0.6rem;
+    border-top: 0.3rem solid transparent;
+    border-right: 0.5rem solid rgb(76, 91, 111);
+    border-bottom: 0.3rem solid transparent;
+    width: 0;
+    height: 0;
+    margin-top: 0.5rem;
+}
+
+.Righthorn {
+    left: -0.5rem;
+    top: 0.6rem;
+    border-top: 0.3rem solid transparent;
+    border-left: 0.5rem solid rgb(74, 138, 202);
+    border-bottom: 0.3rem solid transparent;
+    width: 0;
+    height: 0;
+    margin-top: 0.5rem;
+    margin-right: 0.65rem;
+}
+
+.roleRemarkDiv2 {
+    /* max-width: 25rem; */
+    max-width: calc(100% - 8rem);
+    /* max-width: 88%; */
+    border-radius: 0.5rem;
+    background: rgb(76, 91, 111);
+    border: 1px solid rgb(76, 91, 111);
+}
+
+.replaceAvatar {
+    /* margin-left: 6rem; */
+    width: 64px;
+}
+
+.width0 {
+    display: none;
+}
+
+/* ////////////////////////////////////////////// */
+.roleRemarkDivImg {
+    display: flex;
+    padding: 0.5rem;
+    /* padding-left: 0; */
+    padding-right: 0;
+    /* width: 100%; */
+}
+
+.roleRemarkDiv3 {
+    /* max-width: 25rem; */
+    max-width: calc(100% - 12rem);
+    line-height: 1.5rem;
+    border-radius: 0.5rem;
+    background: rgb(74, 138, 202);
+    border: 1px solid rgb(74, 138, 202);
+    height: auto;
+    /* display: flex; */
+}
+
+.roleRemarkDiv3r {
+    /* max-width: 25rem; */
+    max-width: calc(100% - 6.5rem);
+    line-height: 1.5rem;
+    border-radius: 0.5rem;
+    background: rgb(74, 138, 202);
+    border: 1px solid rgb(74, 138, 202);
+    height: auto;
+    /* display: flex; */
+}
+
+.roleRemarkDivSpan {
+    color: white;
+    
+    font-size: 1.2rem;
+    font-family: none;
+    /* font-weight: bold; */
+    /* display: inline-block; */
+    white-space: pre-wrap;
+    /* 这两个在技术上是一样的, 为了兼容了浏览器两个都加上 */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
+    /* 这个的使用在web-kit中有些危险，他可能会阶段所有东西 */
+    word-break: break-all;
+    /* Instead use this non-standard one: */
+    word-break: break-word;
+
+    /* 如果浏览器支持的话增加一个连接符(Blink不支持) */
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+
+#box {
+    /* background-color: rgb(207, 207, 206); */
+    overflow: auto;
+    overflow-x: hidden;
+    /* width: 100%; */
+    /* height: 100%; */
+    /* height: auto; */
+    overscroll-behavior: contain;
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* justify-content: flex-start; */
+}
+
+.rightImg {
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    /* max-width: 80%; */
+}
+
+.rightImgExpression {
+    border-radius: 0.25rem;
+    /* max-width: 90%; */
+    margin-right: 1.13rem;
+    margin-left: 0.5rem;
+    width: 10rem;
+}
+
+.udiohsfnds {
+    /* margin-right: 1.25rem; */
+}
+
+.sioahdnaoi {
+    margin-left: 1rem;
+}
+
+.rightImg1 {
+    background-color: rgb(74, 138, 202);
+    max-width: 85%;
+}
+
+.rightImg2 {
+    background-color: rgb(76, 91, 111);
+    max-width: 90%;
+}
+
+.centerRoleArraybtn {
+    display: flex;
+    flex-direction: row;
+    overflow: auto;
+    overflow-y: hidden;
+    width: 100%;
+    overscroll-behavior: contain;
+}
+
+.centerRoleArraybtn img {
+    background-color: rgb(243, 247, 248);
+    border-radius: 2.5rem;
+    margin: 0.5rem 0 0.5rem 0.5rem;
+}
+
+.imgb {
+    width: 64px;
+    height: 64px;
+    filter: brightness(50%);
+}
+
+.conImg:hover {
+    filter: brightness(100%);
+}
+
+.bottomImgs {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    justify-content: flex-start;
+    align-content: center;
+    align-items: center;
+}
+
+.bottomImgs img {
+    margin: 0 0.5rem 0 0;
+    border-radius: 50px;
+    background-color: white;
+    display: block;
+    object-fit: cover;
+    height: 35px;
+    width: 35px;
+}
+
+.imgd {
+    border: 1px solid yellow;
+}
+
+.pangbaiDiv {
+    display: flex;
+    flex-direction: row;
+    margin: 0rem 2rem;
+    /* padding: 20px; */
+    /* width: 610px; */
+    width: 100%;
+    justify-content: center;
+    /* margin-left: auto; */
+}
+
+.pangbaiSpan {
+    display: flex;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-break: break-all;
+    font-size: 1.1rem;
+    font-weight: bold;
+    /* font-family: none; */
+    flex-direction: row;
+    text-align: center;
+    color: rgb(0, 0, 0);
+    font-family: medium;
+}
+
+#text {
+    word-break: break-all;
+    overflow: hidden;
+    resize: none;
+    height: 1.35rem;
+    margin: 0 auto;
+    overflow: hidden;
+    display: flex;
+    /* flex-grow: 2; */
+    /* font-size: 1rem; */
+    /* line-height: 1rem; */
+    width: 100%;
+    /* padding: 0.1rem; */
+    padding: 0 auto;
+}
+
+
+.txtDiv {
+    /* display: flex; */
+    /* flex-grow: 2; */
+    /* width: 243px; */
+    /* height: 1rem; */
+    /* line-height: 1rem; */
+    /* padding: 0 1rem; */
+    width: 100%;
+}
+
+.sdad {
+    border-radius: 2.5rem;
+    margin-left: 0.5rem;
+}
+
+.dsfds {
+    display: flex;
+
+}
+
+.overall {
+    display: flex;
+    height: 100%;
+    /* flex-wrap: wrap; */
+    width: 100%;
+    z-index: 1;
+}
+
+.sonbsc {
+    border-bottom: 1px solid rgb(230, 229, 229);
+    pointer-events: auto;
+    /* width: 100%; */
+}
+
+.nopkmp {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.bimgcs {
+    position: relative;
+    margin: 0 0.25rem;
+
+    height: auto;
+
+    display: flex;
+}
+
+.roleTb {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+
+.xq:hover {
+    background-color: rgb(218, 228, 233);
+}
+
+.bj {
+    width: 62px;
+    height: 62px;
+    border: 1px solid red;
+}
+
+.zz {
+    filter: brightness(50%);
+}
+
+.roleName {
+    margin-left: 1rem;
+    font-size: 2rem;
+    color: rgb(69, 75, 84);
+    font-weight: bolder;
+    display: flex;
+    flex-wrap: nowrap;
+    /* width: 0; */
+}
+
+.wwww {
+
+    display: flex;
+
+    align-items: center;
+}
+
+.ytutug {
+    height: 20%;
+    display: flex;
+
+}
+
+.dufgdusybvcis {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+}
+
+.dufgdusybvcis>button {
+    margin-bottom: 0.5rem;
+}
+
+.ddddddddddd {
+    height: 100%;
+    /* display: flex; */
+}
+
+#qh {
+    display: none;
+}
+
+.bxhjc {
+    margin: 4px;
+    width: 32px;
+    height: 32px;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid white;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-left: auto;
+    justify-content: flex-end;
+}
+
+.bxhjcImg {
+    /* width: 100%; */
+    /* height: 100%; */
+    width: 32px;
+    object-fit: cover;
+}
+
+.abc {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    /* justify-content: center; */
+}
+
+.abc>a>div {
+    background-color: white;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    font-size: 1.3rem;
+    margin-top: 1rem;
+    font-weight: 600;
+    font-family: auto;
+}
+
+.abc>a:hover {
+    position: relative;
+    bottom: 3px;
+}
+
+.abc>div {
+    color: white;
+    font-size: 0.9rem;
+    display: flex;
+}
+
+.setOptionsDiv,
+.Gallery {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 30rem;
+    width: 30rem;
+    border-radius: 0.9rem;
+    background-color: rgb(255, 255, 255);
+    margin-left: -15rem;
+    /*宽度的一半*/
+    margin-top: -15rem;
+    /*高度的一半*/
+}
+
+.yufuyg {
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    bottom: calc(25%);
+    left: calc(25%);
+}
+
+.yufuyg img {
+    width: 20px;
+    display: flex;
+
+
+}
+
+.yufuyguhui {
+    display: flex;
+    margin-top: 5px;
+}
+
+.yufuyg>div>div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 5px;
+}
+
+.uuujkih {
+    display: flex;
+    flex-direction: column;
+}
+
+.uuujkih>div {
+    display: flex;
+    flex-direction: row;
+}
+
+.uuujkih>div>div {
+    margin-top: 1rem;
+    margin-right: 1rem;
+}
+
+
+/* 存档 */
+.archiveList {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 30rem;
+    width: 20rem;
+    border-radius: 0.9rem;
+    background-color: rgb(255, 255, 255);
+    margin-left: -10rem;
+    /*宽度的一半*/
+    margin-top: -15rem;
+    /*高度的一半*/
+    overscroll-behavior: contain;
+}
+
+.archiveGalleryTop {
+    display: flex;
+    height: 10%;
+    width: 100%;
+    flex-direction: row;
+    justify-content: flex-end;
+    background-image: url(/images/Popup_Img_Deco_0.webp);
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* background-position: -2rem -2rem; */
+    align-items: center;
+}
+
+.archiveTydgvsgfv {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    flex-direction: row;
+    /* margin-right: 3.8rem; */
+    align-items: center;
+    /* justify-content: center; */
+}
+
+.archiveYhivdfbs {
+    color: rgb(45, 70, 100);
+    display: flex;
+    font-size: 1.7rem;
+    font-weight: bold;
+    font-family: emoji;
+    margin-right: 7rem;
+    margin-left: auto;
+}
+
+.archiveGalleryContent {
+    background-color: rgb(243, 247, 248);
+    height: 90%;
+    /* background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url(/images/hexa_back_01.webp); */
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-bottom-left-radius: 0.9rem;
+    border-bottom-right-radius: 0.9rem;
+}
+
+.newArchive {
+    display: flex;
+    width: auto;
+    /* margin: 0 10px; */
+    padding: 10px;
+    /* font-size: 1rem; */
+    font-weight: bold;
+    cursor: pointer;
+    border-bottom: 1px solid rgb(218, 225, 229);
+}
+
+.setList {
+    margin-left: 1rem;
+}
+
+.setList>h2 {
+    margin-top: 1rem;
+    /* margin-left: 1rem; */
+}
+
+.setList>div {
+    margin-top: 1rem;
+    /* margin-left: 1rem; */
+}
+
+.newArchive:active {
+    background-color: rgb(202, 215, 221);
+}
+
+.newArchiveLabel {}
+
+.oldArchive {
+    overflow-y: auto;
+    height: 85%;
+}
+
+.ArchiveOne {
+    padding: 10px;
+    display: flex;
+    border-bottom: 1px solid rgb(218, 225, 229);
+}
+
+.AL-Series {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    /* height: 100%; */
+    padding: 0 1rem;
+    /* overflow-x: hidden; */
+    padding-top: 1rem;
+    border-bottom: 1px solid rgb(218, 225, 229);
+    /* padding-top: 0.5rem; */
+    /* cursor: pointer; */
+}
+
+.AL-ArchiveOne {
+    width: 100%;
+    display: flex;
+    /* white-space: normal; */
+    cursor: pointer;
+}
+
+.AL-TitleDiv>.AL-imgTools>img {
+    width: 1.5rem;
+    margin-left: 0.5rem;
+    cursor: pointer;
+}
+
+.AL-OneChildList>.AL-OneChildTitleDiv:first-child {
+    /* margin-top: 1rem; */
+}
+
+.AL-TitleDiv {
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+    padding-bottom: 1rem;
+    display: flex;
+    /* margin-bottom: 1rem; */
+    /* padding: 1rem 0; */
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dxx {
+    font-size: 1.4rem;
+    line-height: 1.4rem;
+    padding: 0;
+    padding-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    justify-content: space-between;
+}
+
+.AL-OneChildList {
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    padding-left: 1rem;
+}
+
+.AL-OneChildTitleDiv {
+    /* width: auto; */
+    font-size: 1.4rem;
+    line-height: 1.4rem;
+    padding-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.AL-OneChildTitle {
+    word-wrap: break-word;
+    word-break: break-all;
+    cursor: pointer;
+}
+
+.word-wrap {
+    word-wrap: break-word;
+    word-break: break-all;
+    /* cursor: pointer; */
+}
+
+.AL-imgTools {
+    display: flex;
+    /* margin-left: auto; */
+}
+
+.AL-OneChildTitleDiv>.AL-imgTools>img {
+    width: 1.4rem;
+    cursor: pointer;
+    margin-left: 0.5rem;
+}
+
+.mhh {
+
+    font-size: 1.1rem;
+
+    line-height: 1.1rem;
+}
+
+.mhhh {
+
+    font-size: 1rem;
+
+    line-height: 1rem;
+}
+
+/* 存档 */
+.n {
+    display: none;
+}
+
+.GalleryTop {
+    display: flex;
+    height: 3rem;
+    flex-direction: row;
+    justify-content: flex-end;
+    background-image: url(/images/Popup_Img_Deco_0.webp);
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* background-position: -2rem -2rem; */
+    align-items: center;
+}
+
+.tydgvsgfv {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    margin-right: 3.8rem;
+    align-content: space-between;
+    align-items: center;
+}
+
+.tydgvsgfv img {
+    /* position: relative; */
+    /* top: 3px; */
+    width: calc(90%);
+}
+
+.yhivdfbs {
+    color: rgb(45, 70, 100);
+    font-size: calc(160%);
+    font-weight: bold;
+    font-family: emoji;
+    /* margin-right: 7rem; */
+}
+
+.gb,
+.archiveGb {
+    /* width: 75%; */
+    cursor: pointer;
+    display: flex;
+    /* margin-right: auto; */
+    /* margin-left: auto; */
+    /* float: right; */
+    /* position: absolute; */
+}
+
+.gb:hover,
+.archiveGb:hover {
+    position: relative;
+    bottom: 3px;
+}
+
+.GalleryContent {
+    background-color: antiquewhite;
+    height: 90%;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url(/images/hexa_back_01.webp);
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-bottom-left-radius: 0.9rem;
+    border-bottom-right-radius: 0.9rem;
+}
+
+.imgContent {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow: auto;
+    overflow-x: hidden;
+    justify-content: space-between;
+    align-content: flex-start;
+}
+
+.hgfhdft {
+    width: 9rem;
+    height: 9rem;
+}
+
+.bimg>.oneImg:last-of-type {
+    /* margin-right: 0.3rem; */
+}
+
+.iuydsgfop {
+    margin: 0;
+    margin-bottom: 0.35rem;
+    /* margin-left: 6rem; */
+    margin-top: 0.5rem;
+}
+
+.hudsfdosf {
+    margin: 0;
+    margin-bottom: 0.5rem;
+    margin-left: 5.4rem;
+}
+
+.yiuchsfh {
+    padding: 0;
+}
+
+.ydbsfhdf {
+    max-width: 92%;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+}
+
+.adb {
+    margin-left: 1.25rem;
+    margin-top: 0.75rem;
+    display: flex;
+}
+
+.updateName {
+    width: 1.25rem;
+}
+
+.replyDiv {
+
+    display: flex;
+
+    width: auto;
+
+    margin: 1rem;
+
+    /* justify-content: space-between; */
+}
+
+.eventContainerLove {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    color: #4C5B6F;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    /* padding-bottom: 0; */
+    background-color: rgb(252, 238, 240);
+    border: 1px solid rgb(221, 210, 216);
+    margin: 0rem 2rem;
+    background-image: url(/images/Favor_Schedule_Deco.webp);
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: auto 100%;
+}
+
+.eventContainerReply {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0rem 2rem;
+    color: #4C5B6F;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    padding-bottom: 0;
+    background-color: rgb(225, 237, 240);
+    border: 1px solid rgb(221, 210, 216);
+    background-image: url(/images/Popup_Img_Deco_2.webp);
+    background-repeat: no-repeat;
+    background-position: right top;
+    /* background-size: auto 100%; */
+}
+
+.eTopTitle {
+    display: flex;
+    flex-direction: row;
+    font-size: large;
+    align-items: center;
+    font-weight: bold;
+}
+
+.eVertical {
+    height: 1rem;
+    width: 0.05rem;
+
+}
+
+.colorRed {
+    height: 1.5rem;
+    width: 0.1rem;
+    background-color: rgb(252, 135, 155);
+}
+
+.colorBlue {
+    height: 1.5rem;
+    width: 0.1rem;
+    background-color: rgb(39, 153, 228);
+}
+
+.eTitle {
+    margin-left: 0.25rem;
+    font-size: larger;
+}
+
+.eLine {
+    border-top: 1px solid rgb(207, 207, 206);
+    margin: 0.5rem 0;
+}
+
+.eContentRed {
+    display: flex;
+    background-color: rgb(252, 135, 155);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    justify-content: center;
+    color: white;
+    font-size: large;
+    font-weight: bold;
+    box-shadow: rgb(215, 165, 165) 0rem 0.05rem 0.2rem;
+    border-bottom: 0.1rem solid rgb(169, 136, 136);
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-break: break-all;
+    /* margin-bottom: 0.5rem; */
+}
+
+.eContentBlue {
+    display: flex;
+    line-height: 1.5rem;
+    /* font-size: 1.5rem; */
+    background-color: rgb(252, 135, 155);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    justify-content: center;
+    color: rgb(75, 105, 137);
+    font-size: large;
+    font-weight: bold;
+    box-shadow: rgb(180, 188, 192) 0rem 0.05rem 0.2rem;
+    border-bottom: 0.1rem solid rgb(174, 174, 174);
+    background-color: white;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-break: break-all;
+    margin-bottom: 0.5rem;
+}
+
+#box>div:nth-of-type(1) {
+    margin-top: 1rem !important;
+}
+
+.waterMarkDiv {
+    /* position: absolute; */
+    right: 10px;
+    text-shadow: 1px 1px rgb(211, 226, 240);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 5px 0;
+    margin-right: 1rem;
+}
+
+.waterMarkDiv>img {
+
+    height: 20px;
+
+    opacity: 0.3;
+}
+
+.bah {
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem 0;
+}
+
+.bah>div:first-child {
+    margin-right: 0.5rem;
+}
+
+.editBtn {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+}
+
+.editBtn>img {
+    width: 1.5rem;
+}
+
+.Gmain {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.GmainTop {
+    display: flex;
+    /* height: 94%; */
+    width: 100%;
+    height: calc(100% - 6.3rem);
+}
+
+.GmainBtm {
+    display: flex;
+    /* height: 6%; */
+    height: 2.9rem;
+    width: 100%;
+}
+
+.textarea-inherit {
+    width: 100%;
+    overflow: auto;
+    word-break: break-all;
+}
+
+.chooseDiv {
+    display: flex;
+    justify-content: flex-end;
+    margin-left: auto;
+}
+
+.iptChoose {
+    display: flex;
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+.chooseDivYHZ {
+    display: flex;
+    /* margin-right: 8px; */
+}
+
+.iptChooseYHZ {
+    display: flex;
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+.dfsdfYHZ {
+
+display: flex;
+
+/* width: 100%; */
+
+/* flex-direction: row-reverse; */
+
+/* align-items: center; */
+}
+
+.chooseNone {
+    display: none;
+}
+
+#box .editOpen>:first-child {
+    border-top: 2px dashed black;
+}
+
+.pyqTopDiv {
+    margin: 1rem;
+    display: flex;
+    flex-direction: row;
+    /* position: relative; */
+    /* width: 100%; */
+}
+
+.pyqTopDiv_leftImg {
+    margin-right: 1rem;
+}
+
+.pyqTopDiv_leftImg>img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+}
+
+.pyqTopDiv_right {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.pyqTopDiv_right>.pyqTopDiv_right_name {
+    font-size: 1.2rem;
+    line-height: 1.5rem;
+    color: rgb(99, 118, 157);
+}
+
+.pyqTopDiv_right>.pyqTopDiv_right_content {
+    font-size: 1rem;
+    line-height: 1.5rem;
+}
+
+.content_btm {
+    font-size: 1rem;
+    line-height: 1rem;
+    width: calc(100%);
+    /* display: flex; */
+    /* flex-direction: column; */
+}
+.content_btm_pathAndimgbtn{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.content_btm_imgbtn{
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+}
+.deleteLiuyan{
+    
+/* width: 1rem; */
+}
+.allExpression{
+    
+width: 64px;
+    
+display: inline-block;
+    
+vertical-align: bottom;
+}
+
+.content_btm_imgbtn>img{
+
+margin-right: 0.5rem;
+
+width: 1.5rem;
+
+cursor: pointer;
+}
+.content_btm_path {
+    margin: 0;
+    margin: 0.8rem 0;
+    color: rgb(99, 118, 157);
+}
+.liuyan_leftools>img{
+    
+width: 20px;
+    
+cursor: pointer;
+}
+.content_btm_date {
+    color: rgb(126, 126, 126);
+    max-width: calc(50%);
+}
+.opkmi{
+    width: calc(30%);
+    margin-right: calc(3%);
+    margin-bottom: 12px;
+    
+}
+.uunilij{
+    resize: horizontal;
+    overflow: auto;
+}
+.opkmi>img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.content_img {
+    display: flex;
+    flex-wrap: wrap;
+    vertical-align: bottom;
+}
+
+.content_img>img {
+    
+    /* height: 50%; */
+    /* resize: horizontal; */
+}
+
+.content_expressions {}
+
+.content_expression {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+
+.content_expression>img {
+    width: 4rem;
+}
+
+.content_btm_dateAndTip {
+
+    display: flex;
+
+    justify-content: space-between;
+}
+
+.content_btm_dateAndTip>.content_btm_Tip {
+    color: rgb(99, 118, 157);
+    max-width: calc(50%);
+    /* min-width: 6rem; */
+    /* text-decoration: underline; */
+    /* background-color: rgb(230,230,230); */
+}
+
+.dsugvbgdcy {
+    margin: 0 1rem;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    background-color: rgb(238, 238, 238);
+}
+
+.pyq_liuyans {
+    padding: 1rem;
+    display: flex;
+    /* border-radius: 5px; */
+    width: auto;
+}
+
+.liuyan_left {
+    margin-right: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.pyq_liuyans>.left_img {
+
+    margin: 1rem;
+
+    margin-left: 0;
+}
+
+.pyq_liuyans>.left_img>img {
+    width: 20px;
+    /* height: 50%; */
+}
+
+.pyq_liuyansDiv {
+    /* display: flex; */
+    flex-direction: column;
+    width: 100%;
+}
+
+.liuyan {
+    display: flex;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+.liuyan_left>img:first-child {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    /* margin-top: 1rem; */
+    /* margin-right: 1rem; */
+}
+.liuyan_leftools{
+    
+display: flex;
+    
+margin-top: 0.5rem;
+    
+width: 100%;
+    
+justify-content: space-between;
+}
+.replyLiuyanRole{
+
+}
+.liuyan_right {
+    /* margin-top: 1rem; */
+    width: 100%;
+    /* display: flex; */
+    /* flex-direction: column; */
+}
+
+.liuyan_nameAndDate {
+    display: flex;
+    /* margin-bottom: 1rem; */
+    /* line-height: 0rem; */
+    /* height: auto; */
+    justify-content: space-between;
+}
+
+.liuyan_name {
+
+font-size: 1.1rem;
+
+color: rgb(99, 118, 157);
+
+/* line-height: 1rem; */
+
+/* max-width: calc(70%); */
+}
+
+.liuyan_date {
+
+color: rgb(126, 126, 126);
+
+/* line-height: 1rem; */
+
+/* max-width: calc(50%); */
+}
+
+.liuyan_content {
+
+line-height: 1.5rem;
+
+/* white-space: pre-wrap; */
+    /* 这两个在技术上是一样的, 为了兼容了浏览器两个都加上 */
+
+/* overflow-wrap: break-word; */
+
+word-wrap: break-word;
+
+-ms-word-break: break-all;
+    /* 这个的使用在web-kit中有些危险，他可能会阶段所有东西 */
+
+word-break: break-all;
+    /* Instead use this non-standard one: */
+
+word-break: break-word;
+
+    /* 如果浏览器支持的话增加一个连接符(Blink不支持) */
+
+-ms-hyphens: auto;
+
+-moz-hyphens: auto;
+
+-webkit-hyphens: auto;
+
+hyphens: auto;
+}
+.liuyan_imgbtn{
+
+display: flex;
+
+justify-content: flex-end;
+}
+.liuyan_imgbtn>img{
+    
+margin-right: 0.5rem;
+    
+width: 1.5rem;
+    
+cursor: pointer;
+}
+.fyuvtyhf {
+    margin-bottom: 0;
+}
+
+#box .liuyan:last-child {
+    margin-bottom: 0;
+}
+
+
+.yr {
+
+    display: flex;
+
+    width: 100%;
+
+    flex-direction: column;
+}
+
+.yt {}
+
+.yb {
+
+    display: flex;
+
+    margin-top: 0.5rem;
+
+    width: 100%;
+
+    flex-direction: row-reverse;
+}
+
+.yhzName {
+
+    /* display: flex; */
+
+    float: right;
+
+    justify-content: flex-end;
+}
+
+.dfsiohbdu {
+    display: flex;
+    width: 100%;
+    flex-direction: row-reverse;
+}
+
+.left>.content::-webkit-scrollbar {
+    width: 0 !important
+}
+
+.gfuyfhf {
+    margin-top: 2.5rem;
+}
+
+.qpW {
+
+    opacity: 0;
+}
+
+.dfusf {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    /* margin-right: 1rem; */
+    justify-content: flex-end;
+}
+
+.YHZTX {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.yhzColor {
+    background-color: #E9FEFF;
+}
+
+.YHZTXdiv {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+
+
+.yhzRightTXTool {
+
+    display: flex;
+
+    height: 3rem;
+
+    width: 100%;
+}
+
+.layui-form>.layui-form-switch {
+    margin: 0;
+}
+
+.yhzRightTX {}
+
+.zzDiv {
+    background-color: rgb(250, 156, 62);
+    width: 100%;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    /* padding: 1rem; */
+    width: 250px;
+    padding-bottom: 0;
+    color: white;
+}
+
+.zzDiv_top {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.ColorOrangeHorn {
+    border-top: 0.3rem solid transparent;
+    border-right: 0.5rem solid rgb(250, 156, 62);
+    border-bottom: 0.3rem solid transparent;
+    width: 0;
+    height: 0;
+    margin-top: 0.5rem;
+}
+
+.ColorOrangeHornR {
+    border-top: 0.3rem solid transparent;
+    border-left: 0.5rem solid rgb(250, 156, 62);
+    border-bottom: 0.3rem solid transparent;
+    width: 0;
+    height: 0;
+    margin-top: 0.5rem;
+    margin-right: 0.65rem;
+}
+
+.zt_font {
+    margin-left: 0.5rem;
+    color: white;
+    line-height: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.zt_font>div {
+    display: flex;
+}
+
+.zzDivd {
+    display: flex;
+    /* width: 250px; */
+    margin: 0.5rem;
+    /* width: 15rem; */
+    /* opacity: 0.5; */
+    /* background-color: rgb(233,207,179); */
+}
+
+.zt_divImg {
+    border: 1px solid white;
+    border-radius: 50%;
+    /* padding: 0px; */
+}
+
+.zt_img {
+
+    /* width: 30px; */
+
+    /* height: 90%; */
+
+    padding: 6px;
+}
+
+.zzDiv_bottom {
+    margin-left: 10px;
+}
+
+.zt_cz {
+    display: flex;
+    flex-direction: column;
+    line-height: 1rem;
+    margin-left: auto;
+}
+
+.zt_cz>div {
+    cursor: pointer;
+}
+
+.MarLeftAuto {
+    /* margin-left: auto; */
+}
+
+.rightRoleOverallr {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+/* 超小屏幕（手机，小于 768px） */
+@media (max-width: 768px) {
+    .width100 {
+        width: 100%;
+    }
+
+    .width00 {
+        width: 0;
+    }
+
+    body {
+        height: 100%;
+        width: auto;
+        margin: 0;
+        overflow-x: hidden;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+
+    .left {
+        display: flex;
+        width: 5rem;
+    }
+
+    .topimg {
+        display: flex;
+    }
+
+    .center {
+        z-index: 99;
+
+
+    }
+
+    .roleRemarkDiv3 {
+        /* max-width: 14rem; */
+        max-width: calc(100% - 10rem);
+    }
+
+    .roleRemarkDiv3r {
+
+        max-width: calc(100% - 6rem);
+
+    }
+
+    .roleRemarkDiv2 {
+        /* max-width: 14rem; */
+        max-width: calc(100% - 6rem);
+    }
+
+    #qh {
+        display: flex;
+    }
+
+    .bottomImgs {
+        width: 94%;
+    }
+
+    .RoleOverall {
+        margin: 0 0.7rem;
+    }
+
+    .roleImg {
+        width: 56px;
+        height: 56px;
+    }
+
+    .replaceAvatar {
+        width: 56px;
+    }
+
+    .topDelete {
+        font-size: 1rem;
+        margin-left: 0;
+        width: auto;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+
+    .roleOverall {
+        margin: 0 0.5rem;
+    }
+
+    .roleOverallTopMargin {
+        margin-top: 1rem !important;
+        /* display: flex; */
+    }
+
+    .rightRoleOverall {
+        margin-top: 0.5rem;
+    }
+
+
+
+    .replyDiv {
+        margin: 1rem 0.5rem;
+    }
+
+    .left>.content {}
+
+    .disNone {
+        display: none;
+    }
+
+    .Gallery {
+        position: absolute;
+        top: calc(50%);
+        left: calc(50%);
+        height: calc(50%);
+        width: calc(85%);
+        border-radius: 0.9rem;
+        background-color: rgb(255, 255, 255);
+        margin-left: calc(-42.5%);
+        /*宽度的一半*/
+        margin-top: calc(-50%);
+        /*高度的一半*/
+    }
+
+    .hgfhdft {
+
+        height: calc(33%);
+
+        width: calc(33%);
+    }
+
+    .tydgvsgfv {
+        margin: 0;
+    }
+}
+
+/* 小屏幕（平板，小于等于 768px） */
+@media (min-width: 768px) {
+    /* body {
+        height: 100%;
+        width: auto;
+        margin: 0;
+        overflow-x: hidden;
+    }
+
+    .left {
+        display: none;
+    }
+
+    .topimg {
+        display: flex;
+    }
+
+    .center {
+        display: none;
+    }
+
+    .roleRemarkDiv3 {
+        max-width: 75%;
+    }
+
+    .roleRemarkDiv2 {
+        max-width: 85%;
+    } */
+}
